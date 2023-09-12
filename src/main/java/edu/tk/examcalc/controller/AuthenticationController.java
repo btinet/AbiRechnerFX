@@ -1,16 +1,13 @@
 package edu.tk.examcalc.controller;
 
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import org.controlsfx.control.SearchableComboBox;
 
 import java.net.URL;
@@ -33,7 +30,6 @@ public class AuthenticationController extends Controller {
         Tab passwordResetTab = new Tab("Passwort vergessen");
         tabPane.getTabs().addAll(loginTab,passwordResetTab);
         VBox centerBox = new VBox();
-        //centerBox.setAlignment(Pos.CENTER);
         GridPane form = new GridPane();
         centerBox.setSpacing(25);
         centerBox.setPadding(new Insets(25,25,25,25));
