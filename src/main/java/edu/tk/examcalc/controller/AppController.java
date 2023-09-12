@@ -69,7 +69,7 @@ public class AppController implements Initializable {
         Controller.login.addListener((observable, oldValue, newValue) -> {
             if(newValue.equals(true)) {
                 switchToController(new PupilController());
-                statusTextProperty.setValue("Konto angemeldet");
+                statusTextProperty.setValue("angemeldet als: Fr. Meißner");
                 root.setTop(menuBar);
             } else {
                 switchToController(new AuthenticationController());

@@ -36,9 +36,9 @@ public class AuthenticationController extends Controller {
         //centerBox.setAlignment(Pos.CENTER);
         GridPane form = new GridPane();
         centerBox.setSpacing(25);
-        centerBox.setPadding(new Insets(15,15,15,15));
-        form.setVgap(5);
-        form.setHgap(5);
+        centerBox.setPadding(new Insets(25,25,25,25));
+        form.setVgap(15);
+        form.setHgap(15);
         form.setGridLinesVisible(false);
         HBox spacer = new HBox();
         HBox buttonGroup = new HBox(5);
@@ -46,15 +46,22 @@ public class AuthenticationController extends Controller {
         resetButton.setCancelButton(true);
         buttonGroup.getChildren().addAll(button,resetButton);
         spacer.setPrefWidth(100);
-        form.addRow(0,new Label("Fach"),new SearchableComboBox<String>());
+
+        SearchableComboBox<String> comboBox = new SearchableComboBox<>();
+        comboBox.getItems().addAll("Informatik","Mathematik","Biologie","Geographie","Sport");
+
+
+        form.addRow(0,new Label("Fach"),comboBox);
         form.addRow(1,new Label("Kennung"),new TextField());
         form.addRow(2,new Label("Passwort"),new PasswordField());
         form.addRow(3,spacer,buttonGroup);
 
         button.setOnAction(this::login);
-        Label title = new Label("Anmelden");
+        Label title = new Label("Am System anmelden");
+        Label subTitle = new Label("Melden Sie sich mit Ihrer Kennung und Ihrem Passwort an, um Stammdaten der Prüflinge zu pflegen.");
         title.setFont(Font.font(16));
         centerBox.getChildren().add(title);
+        centerBox.getChildren().add(subTitle);
         centerBox.getChildren().add(form);
         loginTab.setContent(centerBox);
         content.setCenter(tabPane);
