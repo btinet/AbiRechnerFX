@@ -5,8 +5,8 @@ module edu.tk.fxcontrollertest {
     requires org.controlsfx.controls;
     requires org.kordamp.ikonli.javafx;
 
-    opens edu.tk.fxcontrollertest to javafx.fxml;
-    exports edu.tk.fxcontrollertest;
-    exports edu.tk.fxcontrollertest.controller;
-    opens edu.tk.fxcontrollertest.controller to javafx.fxml;
+    opens edu.tk.examcalc to javafx.fxml;
+    exports edu.tk.examcalc;
+    exports edu.tk.examcalc.controller;
+    opens edu.tk.examcalc.controller to javafx.fxml;
 }

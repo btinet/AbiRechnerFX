@@ -1,4 +1,4 @@
-package edu.tk.fxcontrollertest;
+package edu.tk.examcalc;
 
 import javafx.application.Application;
 import javafx.application.Platform;

@@ -1,4 +1,4 @@
-package edu.tk.fxcontrollertest.controller;
+package edu.tk.examcalc.controller;
 
 
 import javafx.fxml.FXML;
