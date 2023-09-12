@@ -1,5 +1,6 @@
 package edu.tk.examcalc.controller;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
@@ -11,7 +12,7 @@ public class CalculateController extends Controller {
 
 
     @FXML
-    public BorderPane branch;
+    public BorderPane content;
 
     public CalculateController() {
         super("calculate-index.fxml");
@@ -19,6 +20,6 @@ public class CalculateController extends Controller {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        branch.setCenter(new Text("Punkte berechnen"));
+        content.setCenter(new Text("Punkte berechnen"));
     }
 }

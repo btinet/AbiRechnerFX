@@ -11,7 +11,7 @@ public class PupilController extends Controller {
 
 
     @FXML
-    public BorderPane branch;
+    public BorderPane content;
 
     public PupilController() {
         super("pupil-index.fxml");
@@ -19,6 +19,6 @@ public class PupilController extends Controller {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        branch.setCenter(new Text("Kollegiat:innen anlegen und bearbeiten."));
+        content.setCenter(new Text("Kollegiat:innen anlegen und bearbeiten."));
     }
 }

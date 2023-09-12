@@ -1,6 +1,11 @@
 package edu.tk.examcalc.controller;
 
 
+import edu.tk.examcalc.MainApplication;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -22,8 +27,10 @@ public class AppController implements Initializable {
     @FXML
     public BorderPane root;
 
+    public StringProperty statusTextProperty = new SimpleStringProperty();
+    Text statusText = new Text();
     public MenuBar menuBar = new MenuBar();
-    public HBox statusbar = new HBox();
+    public HBox statusBar = new HBox();
     public Node appContent = new Group();
 
     public void switchToController(Controller controller) {
@@ -37,15 +44,17 @@ public class AppController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        root.setTop(menuBar);
+
         root.setCenter(appContent);
-        root.setBottom(statusbar);
+        root.setBottom(statusBar);
 
         MenuItem menuItem1 = new MenuItem("Punkte ermitteln");
         menuItem1.setOnAction(t -> switchToController(new CalculateController()));
         MenuItem menuItem2 = new MenuItem("Lernende verwalten");
         menuItem2.setOnAction(t -> switchToController(new PupilController()));
-        MenuItem menuItem3 = new MenuItem("Option 3");
+        MenuItem menuItem3 = new MenuItem("Abmelden");
+        menuItem3.setOnAction(t -> switchToController(new AuthenticationController()));
+        menuItem3.setOnAction(t -> Controller.login.setValue(false));
 
         MenuItem menuItem4 = new MenuItem("Option 4");
         MenuItem menuItem5 = new MenuItem("Option 5");
@@ -57,8 +66,28 @@ public class AppController implements Initializable {
         menu1.getItems().addAll(menuItem1,menuItem2,menuItem3);
         menu2.getItems().addAll(menuItem4,menuItem5,menuItem6);
 
+        Controller.login.addListener((observable, oldValue, newValue) -> {
+            if(newValue.equals(true)) {
+                switchToController(new PupilController());
+                statusTextProperty.setValue("Konto angemeldet");
+                root.setTop(menuBar);
+            } else {
+                switchToController(new AuthenticationController());
+                statusTextProperty.setValue("abgemeldet");
+                root.setTop(new MenuBar());
+            }
+        });
+
+        if (Controller.login.getValue().equals(false)) {
+            root.setTop(new MenuBar());
+            statusTextProperty.setValue("abgemeldet");
+            switchToController(new AuthenticationController());
+        }
+
         menuBar.getMenus().addAll(menu1,menu2);
-        statusbar.setPadding(new Insets(5,5,5,5));
-        statusbar.getChildren().add(new Text("Konto abgemeldet"));
+        statusBar.setPadding(new Insets(5,5,5,5));
+
+        statusText.textProperty().bind(statusTextProperty);
+        statusBar.getChildren().add(statusText);
     }
 }

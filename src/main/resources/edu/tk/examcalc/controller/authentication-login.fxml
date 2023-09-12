@@ -2,5 +2,5 @@
 
 <?import javafx.scene.layout.BorderPane?>
 <BorderPane fx:id="content" xmlns:fx="http://javafx.com/fxml"
-            fx:controller="edu.tk.examcalc.controller.PupilController">
+            fx:controller="edu.tk.examcalc.controller.AuthenticationController">
 </BorderPane>
