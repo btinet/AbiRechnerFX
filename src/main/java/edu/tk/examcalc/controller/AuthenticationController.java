@@ -71,7 +71,8 @@ public class AuthenticationController extends Controller {
         centerBox.getChildren().add(form);
         centerBox.getChildren().add(buttonGroup);
         centerBox.getChildren().add(loginErrorLabel);
-        masterDetailPane.setMasterNode(centerBox);
+        ScrollPane scrollPane = new ScrollPane(centerBox);
+        masterDetailPane.setMasterNode(scrollPane);
         masterDetailPane.setDetailSide(Side.RIGHT);
         masterDetailPane.setDividerPosition(.3);
         loginTab.setContent(masterDetailPane);
