@@ -1,6 +1,5 @@
 package edu.tk.examcalc.controller;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
@@ -20,6 +19,7 @@ public class CalculateController extends Controller {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        setPageTitle("Note berechnen");
         content.setCenter(new Text("Punkte berechnen"));
     }
 }

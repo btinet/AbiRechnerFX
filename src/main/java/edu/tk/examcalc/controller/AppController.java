@@ -13,8 +13,9 @@ import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
@@ -31,7 +32,8 @@ public class AppController implements Initializable {
     Text statusText = new Text();
     public MenuBar menuBar = new MenuBar();
     public HBox statusBar = new HBox();
-    public Node appContent = new Group();
+    public VBox topBox = new VBox();
+    public VBox appContent = new VBox();
 
     public void switchToController(Controller controller) {
         FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource(controller.getFxmlResource())));
@@ -45,8 +47,26 @@ public class AppController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
+        root.setTop(topBox);
         root.setCenter(appContent);
         root.setBottom(statusBar);
+
+        topBox.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, CornerRadii.EMPTY, Insets.EMPTY)));
+
+
+        if (Controller.login.getValue().equals(false)) {
+
+            topBox.getChildren().add(new MenuBar());
+
+            statusTextProperty.setValue("abgemeldet");
+            switchToController(new AuthenticationController());
+        }
+
+        Label pageLabel = new Label();
+        pageLabel.textProperty().bind(Controller.pageTitleProperty);
+        pageLabel.setFont(new Font(16));
+        pageLabel.setPadding(new Insets(5,10,5,10));
+        topBox.getChildren().add(pageLabel);
 
         MenuItem menuItem1 = new MenuItem("Punkte ermitteln");
         menuItem1.setOnAction(t -> switchToController(new CalculateController()));
@@ -70,19 +90,15 @@ public class AppController implements Initializable {
             if(newValue.equals(true)) {
                 switchToController(new PupilController());
                 statusTextProperty.setValue("angemeldet als: Fr. Meißner");
-                root.setTop(menuBar);
+                topBox.getChildren().set(0,menuBar);
             } else {
                 switchToController(new AuthenticationController());
                 statusTextProperty.setValue("abgemeldet");
-                root.setTop(new MenuBar());
+                topBox.getChildren().set(0,new MenuBar());
             }
         });
 
-        if (Controller.login.getValue().equals(false)) {
-            root.setTop(new MenuBar());
-            statusTextProperty.setValue("abgemeldet");
-            switchToController(new AuthenticationController());
-        }
+
 
         menuBar.getMenus().addAll(menu1,menu2);
         statusBar.setPadding(new Insets(5,5,5,5));

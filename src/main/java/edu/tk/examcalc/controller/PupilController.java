@@ -19,6 +19,7 @@ public class PupilController extends Controller {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        setPageTitle("Kollegiat:innen verwalten");
         content.setCenter(new Text("Kollegiat:innen anlegen und bearbeiten."));
     }
 }

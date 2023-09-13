@@ -33,6 +33,7 @@ public class AuthenticationController extends Controller {
         Button button = new Button("Anmelden");
         button.setDefaultButton(true);
         loginErrorLabel.setTextFill(Color.RED);
+        setPageTitle("Anmelden");
 
         TabPane tabPane = new TabPane();
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
@@ -42,13 +43,13 @@ public class AuthenticationController extends Controller {
         VBox centerBox = new VBox();
         GridPane form = new GridPane();
         centerBox.setSpacing(25);
-        centerBox.setPadding(new Insets(25,25,25,25));
+        centerBox.setPadding(new Insets(25));
         form.setVgap(15);
-        form.setHgap(15);
+        form.setHgap(100);
         form.setGridLinesVisible(false);
         HBox spacer = new HBox();
         HBox buttonGroup = new HBox(5);
-        Button resetButton = new Button("Reset");
+        Button resetButton = new Button("Formular leeren");
         resetButton.setCancelButton(true);
         buttonGroup.getChildren().addAll(button,resetButton);
         spacer.setPrefWidth(100);
@@ -56,25 +57,18 @@ public class AuthenticationController extends Controller {
         SearchableComboBox<String> comboBox = new SearchableComboBox<>();
         comboBox.getItems().addAll("Informatik","Mathematik","Biologie","Geographie","Sport");
 
-
-
         form.addRow(0,new Label("Fach"),comboBox);
         form.addRow(1,new Label("Kennung"), usernameTextField);
         form.addRow(2,new Label("Passwort"), passwordField);
 
         button.setOnAction(this::login);
-        Label title = new Label("Willkommen zurück");
-        Label subTitle = new Label("Bitte anmelden, um fortzufahren.");
-        VBox textBlock = new VBox(title,subTitle);
-        title.setFont(Font.font(16));
-        //centerBox.getChildren().add(textBlock);
         centerBox.getChildren().add(form);
         centerBox.getChildren().add(buttonGroup);
         centerBox.getChildren().add(loginErrorLabel);
         ScrollPane scrollPane = new ScrollPane(centerBox);
         masterDetailPane.setMasterNode(scrollPane);
         masterDetailPane.setDetailSide(Side.RIGHT);
-        masterDetailPane.setDividerPosition(.3);
+        masterDetailPane.setDividerPosition(.4);
         loginTab.setContent(masterDetailPane);
         content.setCenter(tabPane);
     }
