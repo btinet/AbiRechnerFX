@@ -14,11 +14,8 @@ import java.util.ResourceBundle;
 
 public class AuthenticationController extends Controller {
     public BorderPane content;
-
     private final MasterDetailPane masterDetailPane = new MasterDetailPane();
-
     private final LoginForm loginForm = new LoginForm();
-
     public AuthenticationController() {
         super("authentication-login.fxml");
     }
