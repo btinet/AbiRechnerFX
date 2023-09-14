@@ -1,17 +1,13 @@
 package edu.tk.examcalc.controller;
 
+import edu.tk.examcalc.form.LoginForm;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Side;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import org.controlsfx.control.MasterDetailPane;
-import org.controlsfx.control.SearchableComboBox;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -20,9 +16,8 @@ public class AuthenticationController extends Controller {
     public BorderPane content;
 
     private final MasterDetailPane masterDetailPane = new MasterDetailPane();
-    private final TextField usernameTextField = new TextField();
-    private final PasswordField passwordField = new PasswordField();
-    private final Label loginErrorLabel = new Label();
+
+    private final LoginForm loginForm = new LoginForm();
 
     public AuthenticationController() {
         super("authentication-login.fxml");
@@ -30,41 +25,24 @@ public class AuthenticationController extends Controller {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        Button button = new Button("Anmelden");
-        button.setDefaultButton(true);
-        loginErrorLabel.setTextFill(Color.RED);
+
         setPageTitle("Anmelden");
+
+        Tab loginTab = new Tab("Anmelden");
+        Tab passwordResetTab = new Tab("Passwort vergessen");
+
+        loginForm.getSubmitButton().setOnAction(this::login);
+        loginForm.getResetButton().setOnAction(this::resetForm);
 
         TabPane tabPane = new TabPane();
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
-        Tab loginTab = new Tab("Anmelden");
-        Tab passwordResetTab = new Tab("Passwort vergessen");
         tabPane.getTabs().addAll(loginTab,passwordResetTab);
+
         VBox centerBox = new VBox();
-        GridPane form = new GridPane();
         centerBox.setSpacing(25);
         centerBox.setPadding(new Insets(25));
-        form.setVgap(15);
-        form.setHgap(100);
-        form.setGridLinesVisible(false);
-        HBox spacer = new HBox();
-        HBox buttonGroup = new HBox(5);
-        Button resetButton = new Button("Formular leeren");
-        resetButton.setCancelButton(true);
-        buttonGroup.getChildren().addAll(button,resetButton);
-        spacer.setPrefWidth(100);
 
-        SearchableComboBox<String> comboBox = new SearchableComboBox<>();
-        comboBox.getItems().addAll("Informatik","Mathematik","Biologie","Geographie","Sport");
-
-        form.addRow(0,new Label("Fach"),comboBox);
-        form.addRow(1,new Label("Kennung"), usernameTextField);
-        form.addRow(2,new Label("Passwort"), passwordField);
-
-        button.setOnAction(this::login);
-        centerBox.getChildren().add(form);
-        centerBox.getChildren().add(buttonGroup);
-        centerBox.getChildren().add(loginErrorLabel);
+        centerBox.getChildren().add(loginForm.render());
         ScrollPane scrollPane = new ScrollPane(centerBox);
         masterDetailPane.setMasterNode(scrollPane);
         masterDetailPane.setDetailSide(Side.RIGHT);
@@ -73,14 +51,12 @@ public class AuthenticationController extends Controller {
         content.setCenter(tabPane);
     }
 
-    public void login(ActionEvent e) {
-        if(usernameTextField.getText().equals("mei") && passwordField.getText().equals("kolleg")) {
-            System.out.println("Einloggen!");
-            Controller.login.setValue(true);
-        } else {
-            System.out.println("Zugangsdaten sind falsch!");
-            loginErrorLabel.setText("Das hat leider nicht geklappt.");
-        }
+    private void login(ActionEvent e) {
+        loginForm.tryLogin();
+    }
+
+    private void resetForm(ActionEvent e) {
+
     }
 
 }
