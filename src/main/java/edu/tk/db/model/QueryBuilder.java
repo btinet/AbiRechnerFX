@@ -128,28 +128,33 @@ public class QueryBuilder {
     }
 
     private String getColumns(){
-        Field[] fields = this.entity.getClass().getDeclaredFields();
+        Field[] allFields = this.entity.getClass().getDeclaredFields();
+        ArrayList<Field> fields = new ArrayList<>();
+        for(Field field : allFields) {
+            if(field.getModifiers() == Modifier.PROTECTED) {
+                fields.add(field);
+            }
+        }
+
         StringBuilder columnBuilder = new StringBuilder();
         int i = 1;
         for (Field field : fields) {
-            if(field.getModifiers() == Modifier.PROTECTED){
-                if(this.naturalCase){
-                    columnBuilder.append(field.getName());
-                } else {
-                    columnBuilder
-                            .append(this.generateSnakeTailString(field.getName()))
-                            .append(" AS ")
-                            .append(field.getName())
-                    ;
-                }
+            if(this.naturalCase){
+                columnBuilder.append(field.getName());
+            } else {
+                columnBuilder
+                        .append(this.generateSnakeTailString(field.getName()))
+                        .append(" AS ")
+                        .append(field.getName())
                 ;
-                if(i < fields.length) {
-                    columnBuilder.append(", ");
-                } else {
-                    columnBuilder.append(" ");
-                }
-                i++;
             }
+            ;
+            if(i < fields.size()) {
+                columnBuilder.append(", ");
+            } else {
+                columnBuilder.append(" ");
+            }
+            i++;
         }
         if(columnBuilder.length() > 0){
             return columnBuilder.toString();
@@ -491,7 +496,7 @@ public class QueryBuilder {
 
     }
 
-    public ArrayList<HashMap<String, String>> getListResult() throws SQLException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+    public ArrayList<HashMap<String, String>> getListResult() throws SQLException {
 
         this.statement.executeQuery();
         ResultSet result = this.statement.getResultSet();
@@ -529,7 +534,7 @@ public class QueryBuilder {
                 if (field.getModifiers() == Modifier.PROTECTED) {
                     String fieldName = "";
 
-
+                    /* Hat einen Bug verursacht, da bereits durch SELECT user_role AS userRole ein camelCase besteht
 
                     if(!this.naturalCase){
                         fieldName += this.generateSnakeTailString(field.getName());
@@ -537,6 +542,8 @@ public class QueryBuilder {
                         fieldName += field.getName();
                     }
 
+                     */
+                    fieldName += field.getName();
 
                     field.setAccessible(true);
                     if(field.getType().getSimpleName().equals("int")){

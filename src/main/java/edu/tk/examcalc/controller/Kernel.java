@@ -2,17 +2,17 @@ package edu.tk.examcalc.controller;
 
 
 import edu.tk.db.global.Session;
-import edu.tk.examcalc.MainApplication;
+import edu.tk.examcalc.controller.AuthenticationController;
+import edu.tk.examcalc.controller.CalculateController;
+import edu.tk.examcalc.controller.Controller;
+import edu.tk.examcalc.controller.PupilController;
+import edu.tk.examcalc.role.Roles;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
-import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -24,7 +24,7 @@ import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
-public class AppController implements Initializable {
+public class Kernel implements Initializable {
 
     @FXML
     public BorderPane root;
@@ -58,7 +58,6 @@ public class AppController implements Initializable {
         if (Controller.login.getValue().equals(false)) {
 
             topBox.getChildren().add(new MenuBar());
-
             statusTextProperty.setValue("abgemeldet");
             switchToController(new AuthenticationController());
         }
@@ -82,27 +81,34 @@ public class AppController implements Initializable {
         MenuItem menuItem5 = new MenuItem("Option 5");
         MenuItem menuItem6 = new MenuItem("Option 6");
 
+        MenuItem adminBoardItem = new MenuItem("Nutzer ändern...");
+
 
         Menu menu1 = new Menu("Datei");
+        Menu wizardMenu = new Menu("Assistenten");
         Menu menu2 = new Menu("?");
         menu1.getItems().addAll(menuItem1,menuItem2,menuItem3);
         menu2.getItems().addAll(menuItem4,menuItem5,menuItem6);
+        wizardMenu.getItems().add(adminBoardItem);
 
         Controller.login.addListener((observable, oldValue, newValue) -> {
             if(newValue.equals(true)) {
                 switchToController(new PupilController());
                 statusTextProperty.setValue("angemeldet als: " + Session.getUser());
                 topBox.getChildren().set(0,menuBar);
+                if(Objects.equals(Session.getUser().getUserRole().getLabel(), Roles.ADM.toString())) {
+                    menuBar.getMenus().add(wizardMenu);
+                }
             } else {
                 switchToController(new AuthenticationController());
                 statusTextProperty.setValue("abgemeldet");
                 topBox.getChildren().set(0,new MenuBar());
+                menuBar.getMenus().remove(wizardMenu);
             }
         });
 
-
-
         menuBar.getMenus().addAll(menu1,menu2);
+
         statusBar.setPadding(new Insets(5,5,5,5));
 
         statusText.textProperty().bind(statusTextProperty);
