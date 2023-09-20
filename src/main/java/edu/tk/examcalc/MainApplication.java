@@ -1,5 +1,6 @@
 package edu.tk.examcalc;
 
+import edu.tk.db.global.Database;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -25,6 +26,8 @@ public class MainApplication extends Application {
             Platform.exit();
             System.exit(0);
         });
+
+        Database.connect();
 
         stage.setScene(scene);
         stage.show();
