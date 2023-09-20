@@ -1,6 +1,9 @@
 package edu.tk.examcalc.controller;
 
+import edu.tk.db.model.Condition;
+import edu.tk.examcalc.entity.User;
 import edu.tk.examcalc.form.LoginForm;
+import edu.tk.examcalc.repository.UserRepository;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Side;
@@ -10,6 +13,7 @@ import javafx.scene.layout.VBox;
 import org.controlsfx.control.MasterDetailPane;
 
 import java.net.URL;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 
 public class AuthenticationController extends Controller {
@@ -49,7 +53,7 @@ public class AuthenticationController extends Controller {
     }
 
     private void login(ActionEvent e) {
-        loginForm.tryLogin();
+        loginForm.tryLogin(new UserRepository(false));
     }
 
     private void resetForm(ActionEvent e) {

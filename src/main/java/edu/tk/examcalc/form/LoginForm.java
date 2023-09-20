@@ -1,6 +1,9 @@
 package edu.tk.examcalc.form;
 
+import edu.tk.db.model.Condition;
 import edu.tk.examcalc.controller.Controller;
+import edu.tk.examcalc.entity.User;
+import edu.tk.examcalc.repository.UserRepository;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -51,8 +54,11 @@ public class LoginForm extends GridPane {
         return vBox;
     }
 
-    public void tryLogin() {
-        if(usernameTextField.getText().equals("mei") && passwordField.getText().equals("kolleg")) {
+    public void tryLogin(UserRepository repository) {
+
+        User user = (User) repository.findOneBy(new Condition("username",usernameTextField.getText()).getMap());
+
+        if(user != null) {
             System.out.println("Einloggen!");
             Controller.login.setValue(true);
         } else {

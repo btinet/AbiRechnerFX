@@ -171,9 +171,8 @@ public abstract class Repository {
     }
 
     private void catchException(SQLException e){
-        System.err.println("Verbindung unterbrochen");
         Database.destroyConnection();
-        System.out.println(e.getErrorCode());
+        System.out.println(e.getMessage());
     }
 
 }
