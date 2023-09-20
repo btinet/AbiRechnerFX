@@ -1,6 +1,7 @@
 package edu.tk.examcalc.controller;
 
 
+import edu.tk.db.global.Session;
 import edu.tk.examcalc.MainApplication;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -89,7 +90,7 @@ public class AppController implements Initializable {
         Controller.login.addListener((observable, oldValue, newValue) -> {
             if(newValue.equals(true)) {
                 switchToController(new PupilController());
-                statusTextProperty.setValue("angemeldet als: Fr. Meißner");
+                statusTextProperty.setValue("angemeldet als: " + Session.getUser());
                 topBox.getChildren().set(0,menuBar);
             } else {
                 switchToController(new AuthenticationController());

@@ -8,7 +8,9 @@ public class User extends Entity {
     protected String username;
     protected String password;
 
-
+    public String toString() {
+        return this.username;
+    }
     public Integer getId() {
         return id;
     }

@@ -1,5 +1,6 @@
 package edu.tk.examcalc.form;
 
+import edu.tk.db.global.Session;
 import edu.tk.db.model.Condition;
 import edu.tk.examcalc.controller.Controller;
 import edu.tk.examcalc.entity.User;
@@ -60,6 +61,7 @@ public class LoginForm extends GridPane {
 
         if(user != null) {
             System.out.println("Einloggen!");
+            Session.setUser(user);
             Controller.login.setValue(true);
         } else {
             System.out.println("Zugangsdaten sind falsch!");
