@@ -7,9 +7,12 @@ public class User extends Entity {
     protected Integer id;
     protected String username;
     protected String password;
+    protected String email;
+    protected String firstname;
+    protected String lastname;
 
     public String toString() {
-        return this.username;
+        return this.firstname + ' ' + this.lastname;
     }
     public Integer getId() {
         return id;
@@ -31,4 +34,27 @@ public class User extends Entity {
         this.password = password;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
 }

@@ -55,9 +55,17 @@ public class LoginForm extends GridPane {
         return vBox;
     }
 
-    public void tryLogin(UserRepository repository) {
+    public void tryLogin() {
 
-        User user = (User) repository.findOneBy(new Condition("username",usernameTextField.getText()).getMap());
+        UserRepository repository = new UserRepository();
+
+        Condition loginCondition = new Condition();
+        loginCondition
+                .add("username",usernameTextField.getText())
+                .add("password",Session.getHash(passwordField.getText()))
+        ;
+
+        User user = (User) repository.findOneBy(loginCondition.getMap());
 
         if(user != null) {
             System.out.println("Einloggen!");
@@ -69,4 +77,8 @@ public class LoginForm extends GridPane {
         }
     }
 
+    public void clearInput() {
+        usernameTextField.clear();
+        passwordField.clear();
+    }
 }

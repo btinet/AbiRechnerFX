@@ -8,12 +8,12 @@ import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Side;
 import javafx.scene.control.*;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import org.controlsfx.control.MasterDetailPane;
 
 import java.net.URL;
-import java.util.HashMap;
 import java.util.ResourceBundle;
 
 public class AuthenticationController extends Controller {
@@ -43,9 +43,18 @@ public class AuthenticationController extends Controller {
         centerBox.setSpacing(25);
         centerBox.setPadding(new Insets(25));
 
+        VBox detailBox = new VBox();
+        detailBox.setPadding(new Insets(25));
+        detailBox.getChildren().add(new Text("Bitte melden Sie sich an, um Kollegiat:innen zu verwalten."));
+
         centerBox.getChildren().add(loginForm.render());
         ScrollPane scrollPane = new ScrollPane(centerBox);
+        ScrollPane scrollPane2 = new ScrollPane(detailBox);
+        scrollPane2.setFitToWidth(true);
+        scrollPane2.setFitToHeight(true);
+        detailBox.setStyle("-fx-background-color: FFFFFF;");
         masterDetailPane.setMasterNode(scrollPane);
+        masterDetailPane.setDetailNode(scrollPane2);
         masterDetailPane.setDetailSide(Side.RIGHT);
         masterDetailPane.setDividerPosition(.4);
         loginTab.setContent(masterDetailPane);
@@ -53,11 +62,11 @@ public class AuthenticationController extends Controller {
     }
 
     private void login(ActionEvent e) {
-        loginForm.tryLogin(new UserRepository(false));
+        loginForm.tryLogin();
     }
 
     private void resetForm(ActionEvent e) {
-
+        loginForm.clearInput();
     }
 
 }

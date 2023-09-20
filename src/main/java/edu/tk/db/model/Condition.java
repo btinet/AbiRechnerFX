@@ -23,8 +23,9 @@ public class Condition {
         this.findBy = new HashMap<>();
     }
 
-    public void add(String field, String value){
+    public Condition add(String field, String value){
         this.findBy.put(field, value);
+        return this;
     }
 
     public HashMap<String, String> getMap(){

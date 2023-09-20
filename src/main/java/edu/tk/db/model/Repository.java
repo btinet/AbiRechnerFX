@@ -19,6 +19,8 @@ public abstract class Repository {
     protected String alias;
     protected QueryBuilder queryBuilder;
 
+    public Repository() {}
+
     public Repository(Boolean naturalCase){
         if(naturalCase){
             this.naturalCase = naturalCase;

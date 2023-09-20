@@ -65,9 +65,10 @@ public class AppController implements Initializable {
 
         Label pageLabel = new Label();
         pageLabel.textProperty().bind(Controller.pageTitleProperty);
-        pageLabel.setFont(new Font(16));
+        pageLabel.setFont(new Font(14));
         pageLabel.setPadding(new Insets(5,10,5,10));
         topBox.getChildren().add(pageLabel);
+        topBox.setStyle("-fx-background-color: linear-gradient(from 75% 75% to 100% 100%, #F2F2F2, #0071BC);");
 
         MenuItem menuItem1 = new MenuItem("Punkte ermitteln");
         menuItem1.setOnAction(t -> switchToController(new CalculateController()));
