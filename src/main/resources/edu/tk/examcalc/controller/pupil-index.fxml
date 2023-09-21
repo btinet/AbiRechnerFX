@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.layout.BorderPane?>
-<BorderPane fx:id="content" xmlns:fx="http://javafx.com/fxml"
-            fx:controller="edu.tk.examcalc.controller.PupilController">
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.Tab?>
+<?import org.controlsfx.control.MasterDetailPane?>
+<BorderPane fx:id="content" xmlns:fx="http://javafx.com/fxml" fx:controller="edu.tk.examcalc.controller.PupilController">
+    <center>
+        <TabPane tabClosingPolicy="UNAVAILABLE">
+            <Tab fx:id="listTab" text="Alle Kollegiat:innen">
+                <MasterDetailPane fx:id="masterPane" dividerPosition=".2" detailSide="LEFT" />
+            </Tab>
+            <Tab fx:id="importTab" text="Importieren" />
+            <Tab fx:id="exportTab" text="Exportieren" />
+        </TabPane>
+    </center>
 </BorderPane>

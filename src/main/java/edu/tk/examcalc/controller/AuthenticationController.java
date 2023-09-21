@@ -5,6 +5,7 @@ import edu.tk.examcalc.entity.User;
 import edu.tk.examcalc.form.LoginForm;
 import edu.tk.examcalc.repository.UserRepository;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Side;
 import javafx.scene.control.*;
@@ -17,9 +18,15 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class AuthenticationController extends Controller {
+    @FXML
     public BorderPane content;
+    @FXML
+    public Tab loginTab;
+    @FXML
+    public Tab passwordResetTab;
     private final MasterDetailPane masterDetailPane = new MasterDetailPane();
     private final LoginForm loginForm = new LoginForm();
+
     public AuthenticationController() {
         super("authentication-login.fxml");
     }
@@ -29,15 +36,8 @@ public class AuthenticationController extends Controller {
 
         setPageTitle("Anmelden");
 
-        Tab loginTab = new Tab("Anmelden");
-        Tab passwordResetTab = new Tab("Passwort vergessen");
-
         loginForm.getSubmitButton().setOnAction(this::login);
         loginForm.getResetButton().setOnAction(this::resetForm);
-
-        TabPane tabPane = new TabPane();
-        tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
-        tabPane.getTabs().addAll(loginTab,passwordResetTab);
 
         VBox centerBox = new VBox();
         centerBox.setSpacing(25);
@@ -55,10 +55,9 @@ public class AuthenticationController extends Controller {
         detailBox.setStyle("-fx-background-color: FFFFFF;");
         masterDetailPane.setMasterNode(scrollPane);
         masterDetailPane.setDetailNode(scrollPane2);
-        masterDetailPane.setDetailSide(Side.RIGHT);
-        masterDetailPane.setDividerPosition(.4);
+        masterDetailPane.setDetailSide(Side.LEFT);
+        masterDetailPane.setDividerPosition(.3);
         loginTab.setContent(masterDetailPane);
-        content.setCenter(tabPane);
     }
 
     private void login(ActionEvent e) {

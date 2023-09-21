@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.layout.BorderPane?>
-<BorderPane fx:id="content" xmlns:fx="http://javafx.com/fxml"
-            fx:controller="edu.tk.examcalc.controller.AuthenticationController">
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.Tab?>
+<BorderPane fx:id="content" xmlns:fx="http://javafx.com/fxml" fx:controller="edu.tk.examcalc.controller.AuthenticationController">
+    <center>
+        <TabPane tabClosingPolicy="UNAVAILABLE">
+            <Tab fx:id="loginTab" text="Anmelden" />
+            <Tab fx:id="passwordResetTab" text="Passwort vergessen" />
+        </TabPane>
+    </center>
 </BorderPane>
