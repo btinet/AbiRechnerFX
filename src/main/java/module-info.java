@@ -10,5 +10,6 @@ module edu.tk.fxcontrollertest {
     opens edu.tk.examcalc.entity to javafx.base;
     exports edu.tk.examcalc;
     exports edu.tk.examcalc.controller;
+    exports edu.tk.examcalc.entity;
     opens edu.tk.examcalc.controller to javafx.fxml;
 }

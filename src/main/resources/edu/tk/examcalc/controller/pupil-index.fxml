@@ -7,8 +7,8 @@
 <BorderPane fx:id="content" xmlns:fx="http://javafx.com/fxml" fx:controller="edu.tk.examcalc.controller.PupilController">
     <center>
         <TabPane tabClosingPolicy="UNAVAILABLE">
-            <Tab fx:id="listTab" text="Alle Kollegiat:innen">
-                <MasterDetailPane fx:id="masterPane" dividerPosition=".2" detailSide="LEFT" />
+            <Tab fx:id="listTab" text="Stammdaten">
+                <MasterDetailPane fx:id="masterPane" dividerPosition=".3" detailSide="LEFT" />
             </Tab>
             <Tab fx:id="importTab" text="Importieren" />
             <Tab fx:id="exportTab" text="Exportieren" />

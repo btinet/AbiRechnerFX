@@ -7,33 +7,34 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class Session {
 
-    protected static HashMap<String, String> post = new HashMap<>();
+    protected static HashMap<String, Object> post = new HashMap<>();
 
     protected static User user;
     private static final Charset UTF_8 = StandardCharsets.UTF_8;
     private static final String OUTPUT_FORMAT = "%-20s:%s";
 
-    public static void set(String key, String value){
+    public static void set(String key, Object value){
         post.put(key,value);
     }
 
-    public static String get(String key){
+    public static Object get(String key){
         if(post.containsKey(key)){
-            String string = post.get(key);
+            Object string = post.get(key);
             post.remove(key);
             return string;
         }
-        return "";
+        return null;
     }
 
-    public static String copy(String key){
+    public static Object copy(String key){
         if(post.containsKey(key)){
             return post.get(key);
         }
-        return "";
+        return null;
     }
 
     public static void setUser(User user){

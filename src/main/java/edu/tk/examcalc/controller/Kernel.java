@@ -31,7 +31,7 @@ public class Kernel implements Initializable {
 
     public StringProperty statusTextProperty = new SimpleStringProperty();
     Text statusText = new Text();
-    public MenuBar menuBar = new MenuBar();
+    public static MenuBar menuBar = new MenuBar();
     public HBox statusBar = new HBox();
     public VBox topBox = new VBox();
     public VBox appContent = new VBox();
@@ -67,7 +67,7 @@ public class Kernel implements Initializable {
         pageLabel.setFont(new Font(14));
         pageLabel.setPadding(new Insets(5,10,5,10));
         topBox.getChildren().add(pageLabel);
-        topBox.setStyle("-fx-background-color: linear-gradient(from 75% 75% to 100% 100%, #F2F2F2, #0071BC);");
+        topBox.setStyle("-fx-background-color: linear-gradient(from 65% 65% to 90% 90%, #F2F2F2, #309CCB);");
 
         MenuItem menuItem1 = new MenuItem("Punkte ermitteln");
         menuItem1.setOnAction(t -> switchToController(new CalculateController()));
