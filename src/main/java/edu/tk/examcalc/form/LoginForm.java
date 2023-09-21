@@ -15,7 +15,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
-public class LoginForm extends GridPane {
+public class LoginForm extends Form {
 
     private final Button submitButton = new Button("Anmelden");
     private final Button resetButton = new Button("Formular leeren");

@@ -4,12 +4,20 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.Tab?>
 <?import org.controlsfx.control.MasterDetailPane?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.control.Button?>
 <BorderPane fx:id="content" xmlns:fx="http://javafx.com/fxml" fx:controller="edu.tk.examcalc.controller.PupilController">
+    <top>
+        <ToolBar>
+            <Button fx:id="newButton" text="_Neu" />
+            <Button fx:id="editButton" disable="true" text="Bearb_eiten" />
+            <Button fx:id="showButton" disable="true" text="_Anzeigen" />
+            <Button fx:id="calculateButton" disable="true" text="Note bere_chnen" />
+        </ToolBar>
+    </top>
     <center>
         <TabPane tabClosingPolicy="UNAVAILABLE">
-            <Tab fx:id="listTab" text="Stammdaten">
-                <MasterDetailPane fx:id="masterPane" dividerPosition=".3" detailSide="LEFT" />
-            </Tab>
+            <Tab fx:id="listTab" text="Stammdaten" />
             <Tab fx:id="importTab" text="Importieren" />
             <Tab fx:id="exportTab" text="Exportieren" />
         </TabPane>

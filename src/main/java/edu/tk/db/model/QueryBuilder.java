@@ -584,11 +584,8 @@ public class QueryBuilder {
             for (Field field : this.entity.getClass().getDeclaredFields()) {
                 if (field.getModifiers() == Modifier.PROTECTED) {
                     String fieldName = "";
-                    if(!this.naturalCase){
-                        fieldName = this.generateSnakeTailString(field.getName());
-                    } else {
-                        fieldName = field.getName();
-                    }
+                    fieldName = field.getName();
+
 
                     field.setAccessible(true);
                     if(field.getType().getSimpleName().equals("int")){
