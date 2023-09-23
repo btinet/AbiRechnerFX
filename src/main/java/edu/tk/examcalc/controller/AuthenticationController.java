@@ -61,11 +61,11 @@ public class AuthenticationController extends Controller {
     }
 
     private void login(ActionEvent e) {
-        loginForm.tryLogin();
+        loginForm.submit();
     }
 
     private void resetForm(ActionEvent e) {
-        loginForm.clearInput();
+        loginForm.cancel();
     }
 
 }

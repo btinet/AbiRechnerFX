@@ -1,28 +1,40 @@
 package edu.tk.examcalc.controller;
 
+import com.itextpdf.layout.Document;
 import edu.tk.db.global.Session;
-import edu.tk.examcalc.MainApplication;
 import edu.tk.examcalc.component.DialogComponent;
 import edu.tk.examcalc.component.Icon;
 import edu.tk.examcalc.entity.Pupil;
 import edu.tk.examcalc.form.PupilForm;
+import edu.tk.examcalc.repository.PupilRepository;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
+import javafx.stage.FileChooser;
+import javafx.stage.Window;
 
+import com.itextpdf.io.font.constants.StandardFonts;
+import com.itextpdf.kernel.font.PdfFont;
+import com.itextpdf.kernel.font.PdfFontFactory;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.property.TextAlignment;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class PupilController extends Controller {
@@ -40,8 +52,12 @@ public class PupilController extends Controller {
     public Button showButton;
     public Button calculateButton;
 
+    PupilRepository pupilRepository = new PupilRepository(false);
+
     PupilForm pupilForm = new PupilForm();
     private ObservableList<Pupil> pupils;
+
+    private String dest;
 
     public PupilController() {
         super("pupil-index.fxml");
@@ -53,6 +69,9 @@ public class PupilController extends Controller {
         setPageTitle("Kollegiat:innen verwalten");
 
         TableView<Pupil> pupilTableView = new TableView<>();
+        Button exportButton = new Button("Ergebnis exportieren");
+        exportButton.setOnAction(this::savePdf);
+        exportTab.setContent(exportButton);
 
         DialogComponent dialog = new DialogComponent("Stammdatenverwaltung");
         dialog.addButtonType(new ButtonType("_Abbrechen", ButtonBar.ButtonData.CANCEL_CLOSE));
@@ -122,7 +141,6 @@ public class PupilController extends Controller {
         });
 
         pupilTableView.setContextMenu(contextMenu);
-
         TableColumn<Pupil,String> firstnameColumn = new TableColumn<>("Vorname");
         firstnameColumn.setMinWidth(200);
         firstnameColumn.setCellValueFactory(
@@ -138,25 +156,12 @@ public class PupilController extends Controller {
         TableColumn<Pupil,LocalDate> birthdateColumn = new TableColumn<>("Geburtsdatum");
         birthdateColumn.setMinWidth(200);
         birthdateColumn.setCellValueFactory(
-                new PropertyValueFactory<>("birthdateProperty")
+                new PropertyValueFactory<>("birthDateProperty")
         );
 
-        final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-        Pupil p1 = new Pupil();
-        p1.setFirstname("Benjamin");
-        p1.setLastname("Wagner");
-        p1.setBirthdate(LocalDate.parse("1987-02-16", dateFormat));
-
-        Pupil p2 = new Pupil();
-        p2.setFirstname("Peter");
-        p2.setLastname("Pan");
-
-        Pupil p3 = new Pupil();
-        p3.setFirstname("Lutz");
-        p3.setLastname("van der Horst");
-
-        pupils = FXCollections.observableArrayList(p1, p2,p3);
+        ArrayList<Pupil> pupilList = (ArrayList<Pupil>) this.pupilRepository.findAll();
+        pupils = FXCollections.observableArrayList(pupilList);
 
         pupilTableView.setItems(pupils);
         pupilTableView.getColumns().addAll(firstnameColumn,lastnameColumn,birthdateColumn);
@@ -164,4 +169,45 @@ public class PupilController extends Controller {
         listTab.setContent(pupilTableView);
 
     }
+
+    public void savePdf(ActionEvent actionEvent)  {
+        Node source = (Node) actionEvent.getSource();
+        Window stage = source.getScene().getWindow();
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Ergebnis speichern");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF Dokument (*.pdf)", "*.pdf"));
+        fileChooser.setInitialFileName(Session.copy("pupil")+".pdf");
+        File file = fileChooser.showSaveDialog(stage);
+        if (file != null) {
+            System.out.println(file.getAbsolutePath());
+            this.dest = file.getAbsolutePath();
+        }
+
+        Document document = null;
+        PdfFont normal = null;
+        try {
+            normal = PdfFontFactory.createFont(StandardFonts.COURIER);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        try (PdfDocument pdf = new PdfDocument(new PdfWriter(dest))) {
+            document = new Document(pdf).setTextAlignment(TextAlignment.JUSTIFIED);
+            Pupil currentPupil = (Pupil) Session.copy("pupil");
+            if(currentPupil != null) {
+
+                document.add(new Paragraph(currentPupil.getFirstname()).setFont(normal));
+                document.add(new Paragraph(currentPupil.getLastname()).setFont(normal));
+            }
+
+
+
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } finally {
+            if (document != null) document.close();
+        }
+
+    }
+
 }

@@ -1,18 +1,14 @@
 package edu.tk.examcalc.form;
 
-import edu.tk.db.global.Session;
-import edu.tk.db.model.Condition;
-import edu.tk.examcalc.controller.Controller;
+import edu.tk.examcalc.entity.Tutor;
 import edu.tk.examcalc.entity.User;
+import edu.tk.examcalc.repository.TutorRepository;
 import edu.tk.examcalc.repository.UserRepository;
-import edu.tk.examcalc.repository.UserRoleRepository;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
@@ -35,7 +31,7 @@ public class PupilForm extends Form {
     private final TextField lastname = new TextField();
     private final TextField birthdate = new TextField();
     private final TextField examDate = new TextField();
-    private final SearchableComboBox<User> supervisor = new SearchableComboBox<>();
+    private final SearchableComboBox<Tutor> tutor = new SearchableComboBox<>();
     private final Label errorLabel = new Label();
 
     public PupilForm() {
@@ -92,17 +88,17 @@ public class PupilForm extends Form {
 
         row++;
         add(new Label("Tutorium"),0,row);
-        add(supervisor,1,row);
+        add(tutor,1,row);
 
         row++;
         add(new Label("Geburtsdatum"),0,row);
         add(new DatePicker(),1,row);
 
-        UserRepository userRepository = new UserRepository();
-        ArrayList<User> users = (ArrayList<User>) userRepository.findAll();
-        System.out.println(users);
-        if(users != null) {
-            supervisor.getItems().addAll(users);
+        TutorRepository tutorRepository = new TutorRepository();
+        ArrayList<Tutor> tutors = (ArrayList<Tutor>) tutorRepository.findAll();
+        System.out.println(tutors);
+        if(tutors != null) {
+            tutor.getItems().addAll(tutors);
         }
 
     }
@@ -118,6 +114,16 @@ public class PupilForm extends Form {
     public VBox render() {
         vBox.getChildren().addAll(this);
         return vBox;
+    }
+
+    @Override
+    public void submit() {
+
+    }
+
+    @Override
+    public void cancel() {
+
     }
 
     public void setFirstname(String firstname) {
@@ -151,4 +157,9 @@ public class PupilForm extends Form {
     public TextField getExamDate() {
         return examDate;
     }
+
+    public SearchableComboBox<Tutor> getTutor() {
+        return tutor;
+    }
+
 }

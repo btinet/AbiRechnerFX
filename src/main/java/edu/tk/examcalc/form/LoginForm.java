@@ -50,13 +50,14 @@ public class LoginForm extends Form {
         return resetButton;
     }
 
+    @Override
     public VBox render() {
         vBox.getChildren().addAll(this, buttonGroup, errorLabel);
         return vBox;
     }
 
-    public void tryLogin() {
-
+    @Override
+    public void submit() {
         UserRepository repository = new UserRepository();
 
         Condition loginCondition = new Condition();
@@ -77,8 +78,10 @@ public class LoginForm extends Form {
         }
     }
 
-    public void clearInput() {
+    @Override
+    public void cancel() {
         usernameTextField.clear();
         passwordField.clear();
     }
+
 }

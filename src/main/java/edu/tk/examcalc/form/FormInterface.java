@@ -6,4 +6,8 @@ public interface FormInterface {
 
     VBox render();
 
+    void submit();
+
+    void cancel();
+
 }
