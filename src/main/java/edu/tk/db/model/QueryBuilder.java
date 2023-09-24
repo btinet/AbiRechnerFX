@@ -2,6 +2,10 @@ package edu.tk.db.model;
 
 
 import edu.tk.db.global.Database;
+import edu.tk.examcalc.MainApplication;
+import edu.tk.examcalc.controller.Kernel;
+import javafx.application.Platform;
+import javafx.scene.Cursor;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -12,10 +16,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class QueryBuilder {
+public class QueryBuilder<T> {
 
     private PreparedStatement statement;
-    private final Entity entity;
+    private final T entity;
     private final Boolean naturalCase;
     private final Boolean ucFirst;
     private final String alias;
@@ -46,7 +50,7 @@ public class QueryBuilder {
     private final HashMap<Integer, Integer> integerParameters = new HashMap<>();
 
 
-    public QueryBuilder (Boolean naturalCase, Boolean ucFirst, Entity entity, String alias) {
+    public QueryBuilder (Boolean naturalCase, Boolean ucFirst, T entity, String alias) {
         this.entity = entity;
         this.naturalCase = naturalCase;
         this.ucFirst = ucFirst;
@@ -65,13 +69,13 @@ public class QueryBuilder {
         return string;
     }
 
-    public QueryBuilder insertOrm(){
+    public QueryBuilder<T> insertOrm(){
         this.insertion.append(this.getInsertColumns("id"));
         this.insertData.append(this.getInsertData("id"));
         return this;
     }
 
-    public QueryBuilder insertOrm(String primaryKey){
+    public QueryBuilder<T> insertOrm(String primaryKey){
         this.insertion.append(this.getInsertColumns(primaryKey));
         this.insertData.append(this.getInsertData(primaryKey));
         return this;
@@ -86,15 +90,21 @@ public class QueryBuilder {
                 if(i != 0) {
                     columnBuilder.append(",");
                 }
-                if(this.naturalCase){
                     try {
                         field.setAccessible(true);
-                        columnBuilder.append("'").append(field.get(this.entity)).append("'");
+
+                        if(field.get(this.entity) != null) {
+                            columnBuilder.append("'");
+                            columnBuilder.append(field.get(this.entity));
+                            columnBuilder.append("'");
+                        } else {
+                            columnBuilder.append("NULL");
+                        }
+
                         field.setAccessible(false);
                     } catch (IllegalAccessException e) {
                         throw new RuntimeException(e);
                     }
-                }
                 i++;
             }
         }
@@ -142,8 +152,13 @@ public class QueryBuilder {
             if(this.naturalCase){
                 columnBuilder.append(field.getName());
             } else {
+                if(this.alias != null) {
+                    columnBuilder.append(alias).append(".");
+                }
+
+                columnBuilder.append(this.generateSnakeTailString(field.getName()));
+
                 columnBuilder
-                        .append(this.generateSnakeTailString(field.getName()))
                         .append(" AS ")
                         .append(field.getName())
                 ;
@@ -162,17 +177,17 @@ public class QueryBuilder {
         return "";
     }
 
-    public QueryBuilder select(String fields) {
+    public QueryBuilder<T> select(String fields) {
         this.projection.append(fields);
         return this;
     }
 
-    public QueryBuilder selectOrm() {
+    public QueryBuilder<T> selectOrm() {
         this.projection.append(this.getColumns());
         return this;
     }
 
-    public QueryBuilder insertInto(){
+    public QueryBuilder<T> insertInto(){
         if(this.naturalCase){
             this.table.append(this.entity.getClass().getSimpleName());
         } else {
@@ -181,12 +196,12 @@ public class QueryBuilder {
         return this;
     }
 
-    public QueryBuilder innerJoin(String table,String key){
+    public QueryBuilder<T> innerJoin(String table,String key){
         this.joins.append(" INNER JOIN ").append(table).append(" USING (").append(key).append(")");
         return this;
     }
 
-    public QueryBuilder innerJoin(String table,String left, String right){
+    public QueryBuilder<T> innerJoin(String table,String left, String right){
         this.joins.append(" INNER JOIN ")
                 .append(table)
                 .append(" ON (")
@@ -233,7 +248,7 @@ public class QueryBuilder {
         return i;
     }
 
-    public QueryBuilder andWhere(String condition){
+    public QueryBuilder<T> andWhere(String condition){
         if(0 != this.condition.length()){
             this.condition.append(" AND ");
         }
@@ -241,7 +256,7 @@ public class QueryBuilder {
         return this;
     }
 
-    public QueryBuilder orWhere(String condition){
+    public QueryBuilder<T> orWhere(String condition){
         if(0 != this.condition.length()){
             this.condition.append(" OR ");
         }
@@ -249,7 +264,7 @@ public class QueryBuilder {
         return this;
     }
 
-    public QueryBuilder groupBy(String field){
+    public QueryBuilder<T> groupBy(String field){
         if(0 != this.groupBy.length()){
             this.groupBy.append(", ");
         }
@@ -257,7 +272,7 @@ public class QueryBuilder {
         return this;
     }
 
-    public QueryBuilder andHaving(String condition){
+    public QueryBuilder<T> andHaving(String condition){
         if(0 != this.having.length()){
             this.having.append(" AND ");
         }
@@ -265,7 +280,7 @@ public class QueryBuilder {
         return this;
     }
 
-    public QueryBuilder orHaving(String condition){
+    public QueryBuilder<T> orHaving(String condition){
         if(0 != this.having.length()){
             this.having.append(" OR ");
         }
@@ -273,7 +288,7 @@ public class QueryBuilder {
         return this;
     }
 
-    public QueryBuilder orderBy(HashMap<String, String> orderBy){
+    public QueryBuilder<T> orderBy(HashMap<String, String> orderBy){
         int i = 1;
         for(Map.Entry<String, String> entry: orderBy.entrySet()){
             this.orderBy.append(entry.getKey()).append(" ").append(entry.getValue().toUpperCase());
@@ -285,19 +300,19 @@ public class QueryBuilder {
         return this;
     }
 
-    public QueryBuilder setParameter(Integer parameter, int value){
+    public QueryBuilder<T> setParameter(Integer parameter, int value){
         this.integerParameters.put(parameter, value);
         System.out.println(parameter + ". ? ist: " + value);
         return this;
     }
 
-    public QueryBuilder setParameter(Integer parameter, String value){
+    public QueryBuilder<T> setParameter(Integer parameter, String value){
         this.stringParameters.put(parameter, value);
         System.out.println(parameter + ". ? ist: " + value);
         return this;
     }
 
-    public QueryBuilder getUpdateQuery() throws SQLException {
+    public QueryBuilder<T> getUpdateQuery() throws SQLException {
         this.query.append("UPDATE ");
         if(this.naturalCase){
             this.query.append(this.entity.getClass().getSimpleName());
@@ -335,10 +350,20 @@ public class QueryBuilder {
         }
 
         System.out.println("UPDATE Query: " + this.query);
+        Platform.runLater(() -> {
+            Kernel.activityStringProperty.setValue(this.query.toString());
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            
+        });
+
         return this;
     }
 
-    public QueryBuilder getRemoveQuery(){
+    public QueryBuilder<T> getRemoveQuery(){
         this.query.append("DELETE FROM ");
 
         if(this.naturalCase){
@@ -382,10 +407,19 @@ public class QueryBuilder {
         }
 
         System.out.println("DELETE Query: " + this.query);
+        Platform.runLater(() -> {
+            Kernel.activityStringProperty.setValue(this.query.toString());
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            
+        });
         return this;
     }
 
-    public QueryBuilder getInsertQuery() throws SQLException {
+    public QueryBuilder<T> getInsertQuery() throws SQLException {
         // TODO: Parameter nicht in das SQL-Statement aufnehmen!
         this.query.append("INSERT INTO ");
         if(this.naturalCase){
@@ -420,10 +454,19 @@ public class QueryBuilder {
         }
 
         System.out.println("INSERT Query: " + this.query);
+        Platform.runLater(() -> {
+            Kernel.activityStringProperty.setValue(this.query.toString());
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            
+        });
         return this;
     }
 
-    public QueryBuilder getQuery() throws SQLException {
+    public QueryBuilder<T> getQuery() throws SQLException {
         this.query.append("SELECT ");
 
         if(0 != this.projection.length()){
@@ -481,7 +524,16 @@ public class QueryBuilder {
                 }
             }
         }
-        System.out.println("SELECT Query: " + this.query);
+        System.out.println(this.query);
+        Platform.runLater(() -> {
+            Kernel.activityStringProperty.setValue(this.query.toString());
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            
+        });
         return this;
     }
 
@@ -498,6 +550,7 @@ public class QueryBuilder {
 
     public ArrayList<HashMap<String, String>> getListResult() throws SQLException {
 
+
         this.statement.executeQuery();
         ResultSet result = this.statement.getResultSet();
         ResultSetMetaData metaData = result.getMetaData();
@@ -513,10 +566,20 @@ public class QueryBuilder {
                 list.add(row);
             }
         }
+        Platform.runLater(() -> {
+            Kernel.activityStringProperty.setValue(this.query.toString());
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            
+        });
         return list;
     }
 
-    public Entity getOneOrNullResult() throws SQLException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+    public T getOneOrNullResult() throws SQLException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+
 
         this.statement.setMaxRows(1);
         this.statement.executeQuery();
@@ -524,11 +587,11 @@ public class QueryBuilder {
         result = this.statement.getResultSet();
         ResultSetMetaData metaData = result.getMetaData();
 
-        Entity object = null;
+        T object = null;
 
         while (result.next()) {
 
-            object = this.entity.getClass().getConstructor().newInstance();
+            object = (T) this.entity.getClass().getConstructor().newInstance();
 
             for (Field field : this.entity.getClass().getDeclaredFields()) {
                 if (field.getModifiers() == Modifier.PROTECTED) {
@@ -565,24 +628,27 @@ public class QueryBuilder {
                 }
             }
         }
+
+
         return object;
     }
 
-    public ArrayList<Entity> getResult() throws SQLException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+    public ArrayList<T> getResult() throws SQLException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+
 
         this.statement.executeQuery();
         ResultSet result;
         result = this.statement.getResultSet();
-        ArrayList<Entity> list = new ArrayList<>();
+        ArrayList<T> list = new ArrayList<>();
 
-        Entity object;
+        T object;
 
         while (result.next()) {
 
-            object = this.entity.getClass().getConstructor().newInstance();
+            object = (T) this.entity.getClass().getConstructor().newInstance();
 
             for (Field field : this.entity.getClass().getDeclaredFields()) {
-                if (field.getModifiers() == Modifier.PROTECTED) {
+                if (field.getModifiers() == Modifier.PROTECTED || field.getModifiers() == Modifier.PUBLIC) {
                     String fieldName = "";
                     fieldName = field.getName();
 
@@ -606,6 +672,8 @@ public class QueryBuilder {
             }
             list.add(object);
         }
+
+
         return list;
     }
 

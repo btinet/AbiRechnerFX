@@ -2,10 +2,12 @@ package edu.tk.examcalc.form;
 
 import edu.tk.db.global.Session;
 import edu.tk.db.model.Condition;
+import edu.tk.examcalc.MainApplication;
 import edu.tk.examcalc.controller.Controller;
 import edu.tk.examcalc.entity.User;
 import edu.tk.examcalc.repository.UserRepository;
 import javafx.geometry.Insets;
+import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -66,12 +68,13 @@ public class LoginForm extends Form {
                 .add("password",Session.getHash(passwordField.getText()))
         ;
 
-        User user = (User) repository.findOneBy(loginCondition.getMap());
+        User user = repository.findOneBy(loginCondition.getMap());
 
         if(user != null) {
             System.out.println("Einloggen!");
             Session.setUser(user);
             Controller.login.setValue(true);
+
         } else {
             System.out.println("Zugangsdaten sind falsch!");
             errorLabel.setText("Das hat leider nicht geklappt.");

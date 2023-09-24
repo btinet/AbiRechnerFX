@@ -1,11 +1,39 @@
 package edu.tk.examcalc.repository;
-
+;
 import edu.tk.db.model.Repository;
 import edu.tk.examcalc.entity.Pupil;
 
-public class PupilRepository extends Repository {
+import java.lang.reflect.InvocationTargetException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+public class PupilRepository extends Repository<Pupil> {
     public PupilRepository(Boolean naturalCase) {
         super(naturalCase);
         setEntity(new Pupil());
     }
+
+    public ArrayList<Pupil> findAllJoin(){
+        try {
+            HashMap<String,String> order = new HashMap<>();
+            order.put("examDate","DESC");
+            setAlias("p");
+            return this.createQueryBuilder()
+                    .selectOrm()
+                    .select(", tutor.firstname AS tutorFirstname, tutor.lastname AS tutorLastname")
+                    .innerJoin("tutor","p.tutor_id","tutor.id")
+                    .orderBy(order)
+                    .getQuery()
+                    .getResult()
+                    ;
+
+        } catch (SQLException e) {
+            this.catchException(e);
+        } catch (InvocationTargetException | NoSuchMethodException | InstantiationException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
 }

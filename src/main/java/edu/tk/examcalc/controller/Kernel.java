@@ -2,17 +2,22 @@ package edu.tk.examcalc.controller;
 
 
 import edu.tk.db.global.Session;
+import edu.tk.examcalc.MainApplication;
 import edu.tk.examcalc.controller.AuthenticationController;
 import edu.tk.examcalc.controller.CalculateController;
 import edu.tk.examcalc.controller.Controller;
 import edu.tk.examcalc.controller.PupilController;
 import edu.tk.examcalc.role.Roles;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.Cursor;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -30,6 +35,7 @@ public class Kernel implements Initializable {
     public BorderPane root;
 
     public StringProperty statusTextProperty = new SimpleStringProperty();
+    public static StringProperty activityStringProperty = new SimpleStringProperty();
     Text statusText = new Text();
     public static MenuBar menuBar = new MenuBar();
     public HBox statusBar = new HBox();
@@ -43,6 +49,7 @@ public class Kernel implements Initializable {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
     }
 
     @Override
@@ -111,7 +118,10 @@ public class Kernel implements Initializable {
 
         statusBar.setPadding(new Insets(5,5,5,5));
 
+        Text activityText = new Text();
+        activityText.textProperty().bind(activityStringProperty);
         statusText.textProperty().bind(statusTextProperty);
-        statusBar.getChildren().add(statusText);
+        //statusBar.getChildren().add(statusText);
+        statusBar.getChildren().add(activityText);
     }
 }

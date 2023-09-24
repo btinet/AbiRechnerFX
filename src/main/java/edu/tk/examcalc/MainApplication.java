@@ -15,6 +15,7 @@ import java.util.Objects;
 public class MainApplication extends Application {
 
     public static Image appImage;
+    public static Stage stage;
 
     static {
         try {
@@ -35,6 +36,8 @@ public class MainApplication extends Application {
             Platform.exit();
             System.exit(0);
         });
+
+        MainApplication.stage = stage;
 
         Database.connect();
 

@@ -1,11 +1,14 @@
 package edu.tk.examcalc.controller;
 
+import edu.tk.examcalc.MainApplication;
+import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.layout.BorderPane;
@@ -24,10 +27,13 @@ public abstract class Controller implements Initializable {
     }
 
     public void switchToController(Node contentNode, Controller controller) {
+        Platform.runLater(() -> MainApplication.stage.getScene().setCursor(Cursor.WAIT));
         FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource(controller.getFxmlResource())));
         try {
+
             setRoot(contentNode.getParent());
             root.setCenter(loader.load());
+            Platform.runLater(() -> MainApplication.stage.getScene().setCursor(Cursor.DEFAULT));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -43,5 +49,7 @@ public abstract class Controller implements Initializable {
 
     public static void setPageTitle(String pageTitleProperty) {
         Controller.pageTitleProperty.setValue(pageTitleProperty);
+
     }
+
 }

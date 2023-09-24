@@ -1,13 +1,16 @@
 package edu.tk.examcalc.controller;
 
 import edu.tk.db.model.Condition;
+import edu.tk.examcalc.MainApplication;
 import edu.tk.examcalc.entity.User;
 import edu.tk.examcalc.form.LoginForm;
 import edu.tk.examcalc.repository.UserRepository;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Side;
+import javafx.scene.Cursor;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -61,7 +64,7 @@ public class AuthenticationController extends Controller {
     }
 
     private void login(ActionEvent e) {
-        loginForm.submit();
+        Platform.runLater(loginForm::submit);
     }
 
     private void resetForm(ActionEvent e) {

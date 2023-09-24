@@ -1,21 +1,25 @@
 package edu.tk.examcalc.entity;
 
+import edu.tk.db.model.Condition;
 import edu.tk.db.model.Entity;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import edu.tk.examcalc.repository.ExamRepository;
+import edu.tk.examcalc.repository.TutorRepository;
 
-import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class Pupil extends Entity {
 
+    public String tutorFirstname;
+    public String tutorLastname;
+
     protected int id;
-    protected int tutorId;
+    protected Integer tutorId;
     protected String firstname;
     protected String lastname;
-    protected LocalDate birthDate;
-    protected LocalDate examDate;
+    protected String birthDate;
+    protected String examDate;
+    protected Integer coursePoints;
+    private final TutorRepository tutorRepository = new TutorRepository();
 
     public String toString() {
         return this.firstname + " " + this.lastname;
@@ -25,11 +29,11 @@ public class Pupil extends Entity {
         return id;
     }
 
-    public int getTutorId() {
+    public Integer getTutorId() {
         return tutorId;
     }
 
-    public void setTutorId(int tutorId) {
+    public void setTutorId(Integer tutorId) {
         this.tutorId = tutorId;
     }
 
@@ -49,20 +53,40 @@ public class Pupil extends Entity {
         this.lastname = lastname;
     }
 
-    public LocalDate getBirthDate() {
+    public String getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(LocalDate birthDate) {
+    public void setBirthDate(String birthDate) {
         this.birthDate = birthDate;
     }
 
-    public LocalDate getExamDate() {
+    public String getExamDate() {
         return examDate;
     }
 
-    public void setExamDate(LocalDate examDate) {
+    public void setExamDate(String examDate) {
         this.examDate = examDate;
+    }
+
+    public Integer getCoursePoints() {
+        return coursePoints;
+    }
+
+    public void setCoursePoints(Integer coursePoints) {
+        this.coursePoints = coursePoints;
+    }
+
+    public Tutor getTutor() {
+        if(tutorId != null) {
+            return tutorRepository.find(tutorId);
+        }
+        return null;
+    }
+
+    public ArrayList<Exam> getExams() {
+        ExamRepository examRepository = new ExamRepository();
+        return examRepository.findBy(new Condition("pupil_id",String.valueOf(id)).getMap());
     }
 
 }

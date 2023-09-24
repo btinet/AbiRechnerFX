@@ -1,6 +1,9 @@
 package edu.tk.db.model;
 
 import edu.tk.db.global.Database;
+import edu.tk.examcalc.MainApplication;
+import edu.tk.examcalc.entity.Pupil;
+import javafx.scene.Cursor;
 
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
@@ -9,15 +12,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public abstract class Repository {
+public abstract class Repository<T> {
 
-    protected Entity entity;
+    protected T entity;
 
     protected Boolean naturalCase = false;
 
     protected Boolean ucFirst = false;
     protected String alias;
-    protected QueryBuilder queryBuilder;
+    protected QueryBuilder<T> queryBuilder;
 
     public Repository() {}
 
@@ -27,39 +30,39 @@ public abstract class Repository {
         }
     }
 
-    public Repository setEntity(Entity entity){
+    public Repository<T> setEntity(T entity){
         this.entity =  entity;
         return this;
     }
 
-    public Repository setUcFirst()
+    public Repository<T> setUcFirst()
     {
         this.ucFirst = true;
         return this;
     }
 
-    public Repository setAlias(String alias) {
+    public Repository<T> setAlias(String alias) {
         this.alias = alias;
         return this;
     }
 
-    protected QueryBuilder createQueryBuilder()
+    protected QueryBuilder<T> createQueryBuilder()
     {
-        return this.queryBuilder = new QueryBuilder(this.naturalCase,this.ucFirst,this.entity,this.alias);
+        return this.queryBuilder = new QueryBuilder<>(this.naturalCase,this.ucFirst,this.entity,this.alias);
     }
 
-    public Entity find(int id){
+    public T find(int id){
         return this.doFind(id, "id");
     }
 
-    public Entity find(int id,String field){
-        return this.doFind(id, field);
+    public T find(int id,String field){
+        return  this.doFind(id, field);
     }
 
-    public Entity findOneBy(HashMap<String, String> condition){
+    public T findOneBy(HashMap<String, String> condition){
         try {
             try {
-                QueryBuilder query = this.createQueryBuilder()
+                QueryBuilder<T> query = this.createQueryBuilder()
                         .selectOrm()
                         ;
                 int i = 1;
@@ -87,10 +90,10 @@ public abstract class Repository {
     }
 
 
-    public ArrayList<? extends Entity> findBy(HashMap<String, String> condition){
+    public ArrayList<T> findBy(HashMap<String, String> condition){
         try {
             try {
-                QueryBuilder query = this.createQueryBuilder()
+                QueryBuilder<T> query = this.createQueryBuilder()
                         .selectOrm()
                         ;
                 int i = 1;
@@ -109,18 +112,20 @@ public abstract class Repository {
 
             } catch (NoSuchMethodException | InvocationTargetException | InstantiationException |
                      IllegalAccessException e) {
+                System.out.println("Fehler!");
                 throw new RuntimeException(e);
             }
         } catch (SQLException e) {
+            System.out.println("Fehler!");
             this.catchException(e);
         }
         return null;
     }
 
-    public ArrayList<? extends Entity> findAll(){
+    public ArrayList<T> findAll(){
         try {
             try {
-                return this.createQueryBuilder().selectOrm().getQuery().getResult();
+                return createQueryBuilder().selectOrm().getQuery().getResult();
             } catch (NoSuchMethodException | InvocationTargetException | InstantiationException |
                      IllegalAccessException e) {
                 throw new RuntimeException(e);
@@ -131,7 +136,7 @@ public abstract class Repository {
         return null;
     }
 
-    public ArrayList<? extends Entity> findAll(HashMap<String, String> orderBy){
+    public ArrayList<T> findAll(HashMap<String, String> orderBy){
         try {
             try {
                 return this.createQueryBuilder()
@@ -151,7 +156,7 @@ public abstract class Repository {
         return null;
     }
 
-    protected Entity doFind(int id, String field){
+    protected T doFind(int id, String field){
         try {
             try {
                 return this.createQueryBuilder()
@@ -172,7 +177,7 @@ public abstract class Repository {
         return null;
     }
 
-    private void catchException(SQLException e){
+    protected void catchException(SQLException e){
         Database.destroyConnection();
         System.out.println(e.getMessage());
     }
