@@ -5,6 +5,8 @@ import edu.tk.examcalc.repository.SchoolSubjectRepository;
 
 public class Exam extends Entity {
 
+    public String schoolSubject;
+
     protected int id;
     protected Integer pupilId;
     protected Integer schoolSubjectId;
