@@ -21,7 +21,7 @@ public class PupilRepository extends Repository<Pupil> {
             setAlias("p");
             return this.createQueryBuilder()
                     .selectOrm()
-                    .select(", tutor.firstname AS tutorFirstname, tutor.lastname AS tutorLastname")
+                    .selectPublic("tutor.firstname AS tutorFirstname, tutor.lastname AS tutorLastname")
                     .innerJoin("tutor","p.tutor_id","tutor.id")
                     .orderBy(order)
                     .getQuery()

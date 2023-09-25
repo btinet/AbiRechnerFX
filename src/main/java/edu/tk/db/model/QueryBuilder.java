@@ -23,6 +23,8 @@ public class QueryBuilder<T> {
     private final Boolean naturalCase;
     private final Boolean ucFirst;
     private final String alias;
+
+    private boolean publicSelect = false;
     private final StringBuilder projection = new StringBuilder();
 
     private final StringBuilder insertion = new StringBuilder();
@@ -177,12 +179,23 @@ public class QueryBuilder<T> {
         return "";
     }
 
+    public QueryBuilder<T> selectPublic(String fields) {
+        this.publicSelect = true;
+        return this.select(fields);
+    }
+
     public QueryBuilder<T> select(String fields) {
+        if(this.projection.length() > 0) {
+            this.projection.append(", ");
+        }
         this.projection.append(fields);
         return this;
     }
 
     public QueryBuilder<T> selectOrm() {
+        if(this.projection.length() > 0) {
+            this.projection.append(", ");
+        }
         this.projection.append(this.getColumns());
         return this;
     }
@@ -648,7 +661,7 @@ public class QueryBuilder<T> {
             object = (T) this.entity.getClass().getConstructor().newInstance();
 
             for (Field field : this.entity.getClass().getDeclaredFields()) {
-                if (field.getModifiers() == Modifier.PROTECTED || field.getModifiers() == Modifier.PUBLIC) {
+                if (field.getModifiers() == Modifier.PROTECTED || field.getModifiers() == Modifier.PUBLIC && this.publicSelect) {
                     String fieldName = "";
                     fieldName = field.getName();
 
