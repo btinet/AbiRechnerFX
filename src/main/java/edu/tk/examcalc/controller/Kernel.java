@@ -121,7 +121,7 @@ public class Kernel implements Initializable {
         Text activityText = new Text();
         activityText.textProperty().bind(activityStringProperty);
         statusText.textProperty().bind(statusTextProperty);
-        //statusBar.getChildren().add(statusText);
-        statusBar.getChildren().add(activityText);
+        statusBar.getChildren().add(statusText);
+        //statusBar.getChildren().add(activityText);
     }
 }
