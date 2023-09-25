@@ -75,6 +75,11 @@ public class PupilController extends Controller {
     public void initialize(URL location, ResourceBundle resources) {
         setPageTitle("Kollegiat:innen verwalten");
 
+        EventHandler<ActionEvent> eventHandler = event -> {
+            Pupil item = pupilTableView.getSelectionModel().getSelectedItem().getPupil();
+            Session.set("pupil",item);
+            switchToController(content, new CalculateController());
+        };
 
         // List Tab
         DialogComponent dialog = new DialogComponent("Stammdatenverwaltung");
@@ -90,15 +95,13 @@ public class PupilController extends Controller {
 
         // Set Actions
         newButton.setOnAction(event -> pupilForm.showAndWait(this));
+        showButton.setOnAction(event -> pupilForm.viewAndWait(this));
+        editButton.setOnAction(event -> pupilForm.editAndWait(this));
+        calculateButton.setOnAction(eventHandler);
         refreshButton.setOnAction(e -> switchToController(content,this));
-        showButton.setOnAction(event -> System.out.println("Show " + Session.copy("pupil")));
         exportButton.setOnAction(this::generatePdf);
 
-        EventHandler<ActionEvent> eventHandler = event -> {
-            Pupil item = pupilTableView.getSelectionModel().getSelectedItem().getPupil();
-            Session.set("pupil",item);
-            switchToController(content, new CalculateController());
-        };
+
 
         // Create ContextMenu
         ContextMenuComponent contextMenu = new ContextMenuComponent();

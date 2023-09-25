@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.layout.BorderPane?>
-<BorderPane fx:id="content" xmlns:fx="http://javafx.com/fxml"
-            fx:controller="edu.tk.examcalc.controller.CalculateController">
+<?import javafx.scene.control.ToolBar?>
+<?import edu.tk.examcalc.component.IconButton?>
+<?import javafx.scene.control.Separator?>
+<BorderPane fx:id="content" xmlns:fx="http://javafx.com/fxml" fx:controller="edu.tk.examcalc.controller.CalculateController">
+    <top>
+        <ToolBar>
+            <IconButton fx:id="newButton" text="Prüfung a_nlegen" />
+            <Separator />
+            <IconButton fx:id="editButton" disable="true" text="Bearb_eiten" />
+            <IconButton fx:id="exportButton" disable="true" text="Akte e_xportieren" />
+            <Separator />
+            <IconButton fx:id="refreshButton" text="Aktualisie_ren" />
+            <IconButton fx:id="pupilCrudButton" text="Stammdaten" />
+        </ToolBar>
+    </top>
+    <center>
+
+    </center>
 </BorderPane>

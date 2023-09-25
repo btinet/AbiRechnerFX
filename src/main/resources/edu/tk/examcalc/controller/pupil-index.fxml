@@ -13,7 +13,7 @@
             <Separator />
             <IconButton fx:id="editButton" disable="true" text="Bearb_eiten" />
             <IconButton fx:id="showButton" disable="true" text="_Anzeigen" />
-            <IconButton fx:id="calculateButton" disable="true" text="Note bere_chnen" />
+            <IconButton fx:id="calculateButton" disable="true" text="Prüfungen" />
             <IconButton fx:id="exportButton" disable="true" text="Akte e_xportieren" />
             <Separator />
             <IconButton fx:id="refreshButton" text="Aktualisie_ren" />

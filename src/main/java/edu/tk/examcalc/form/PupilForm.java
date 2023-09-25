@@ -1,5 +1,6 @@
 package edu.tk.examcalc.form;
 
+import edu.tk.db.global.Session;
 import edu.tk.db.model.EntityManager;
 import edu.tk.examcalc.component.DialogComponent;
 import edu.tk.examcalc.controller.Controller;
@@ -16,11 +17,13 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.util.converter.DateTimeStringConverter;
+import javafx.util.converter.LocalDateStringConverter;
 import org.controlsfx.control.SearchableComboBox;
 import org.controlsfx.control.textfield.CustomTextField;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class PupilForm extends Form {
@@ -135,6 +138,7 @@ public class PupilForm extends Form {
     }
 
     public void showAndWait(PupilController controller) {
+        dialog.setHeaderText("Datensatz hinzufügen");
         dialog.showAndWait().ifPresent(response -> {
             if (response.getButtonData() == dialog.getSubmitButtonType().getButtonData()) {
                 System.out.println("Gespeichert");
@@ -146,6 +150,75 @@ public class PupilForm extends Form {
                 cancel();
             }
         });
+    }
+
+    public void editAndWait(PupilController controller) {
+        dialog.setHeaderText("Datensatz aktualisieren");
+        Pupil currentPupil = (Pupil) Session.get("pupil");
+
+        if (currentPupil != null) {
+            firstname.setText(currentPupil.getFirstname());
+            lastname.setText(currentPupil.getLastname());
+            examDate.setText(currentPupil.getExamDate());
+            birthdate.getEditor().setText(currentPupil.getBirthDate());
+            tutor.setValue(currentPupil.getTutor());
+            coursePoints.setText(currentPupil.getCoursePoints().toString());
+
+
+            dialog.showAndWait().ifPresent(response -> {
+                if (response.getButtonData() == dialog.getSubmitButtonType().getButtonData()) {
+                    System.out.println("Gespeichert");
+                    update(currentPupil);
+                    controller.switchToController(controller.content, controller);
+                }
+                if (response.getButtonData() == dialog.getCancelButtonType().getButtonData()) {
+                    System.out.println("Abgebrochen");
+                    cancel();
+                }
+            });
+
+        } else {
+            cancel();
+            dialog.close();
+        }
+
+    }
+
+    public void viewAndWait(PupilController controller) {
+        dialog.setHeaderText("Datensatz anzeigen");
+        Pupil currentPupil = (Pupil) Session.get("pupil");
+
+        if (currentPupil != null) {
+            firstname.setText(currentPupil.getFirstname());
+            firstname.setEditable(false);
+            lastname.setText(currentPupil.getLastname());
+            lastname.setEditable(false);
+            examDate.setText(currentPupil.getExamDate());
+            examDate.setEditable(false);
+            birthdate.getEditor().setText(currentPupil.getBirthDate());
+            birthdate.setEditable(false);
+            tutor.setValue(currentPupil.getTutor());
+            tutor.setEditable(false);
+            coursePoints.setText(currentPupil.getCoursePoints().toString());
+            coursePoints.setEditable(false);
+
+
+            dialog.showAndWait().ifPresent(response -> {
+                if (response.getButtonData() == dialog.getSubmitButtonType().getButtonData()) {
+                    System.out.println("Gespeichert");
+                    cancel();
+                }
+                if (response.getButtonData() == dialog.getCancelButtonType().getButtonData()) {
+                    System.out.println("Abgebrochen");
+                    cancel();
+                }
+            });
+
+        } else {
+            cancel();
+            dialog.close();
+        }
+
     }
 
     @Override
@@ -167,16 +240,41 @@ public class PupilForm extends Form {
 
         System.out.println(pupil);
         entityManager.persist(pupil);
+        cancel();
+    }
+
+    public void update(Pupil pupil) {
+        EntityManager entityManager = new EntityManager(false);
+
+        pupil.setFirstname(this.firstname.getText());
+        pupil.setLastname(this.lastname.getText());
+        pupil.setExamDate(this.examDate.getText());
+        pupil.setBirthDate(this.birthdate.getEditor().getText());
+        pupil.setCoursePoints(Integer.parseInt(this.coursePoints.getText()));
+
+        if(this.tutor.getSelectionModel().getSelectedItem() != null) {
+            pupil.setTutorId(this.tutor.getSelectionModel().getSelectedItem().getId());
+        } else {
+            pupil.setTutorId(null);
+        }
+        entityManager.persist(pupil,pupil.getId());
+        cancel();
     }
 
     @Override
     public void cancel() {
         getFirstname().clear();
+        getFirstname().setEditable(true);
         getLastname().clear();
+        getLastname().setEditable(true);
         getExamDate().clear();
+        getExamDate().setEditable(true);
         getBirthdate().getEditor().clear();
+        getBirthdate().setEditable(true);
         getCoursePoints().clear();
+        getCoursePoints().setEditable(true);
         getTutor().getSelectionModel().clearSelection();
+        getTutor().setEditable(true);
     }
 
     public TextField getFirstname() {
