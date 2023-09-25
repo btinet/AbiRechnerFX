@@ -1,6 +1,7 @@
 package edu.tk.examcalc.entity;
 
 import edu.tk.db.model.Entity;
+import edu.tk.examcalc.repository.ExamRepository;
 import edu.tk.examcalc.repository.SchoolSubjectRepository;
 
 public class Exam extends Entity {
@@ -54,4 +55,8 @@ public class Exam extends Entity {
         return subjectRepository.find(schoolSubjectId);
     }
 
+    public Integer getSummedExamPoints() {
+        ExamRepository examRepository = new ExamRepository();
+        return examRepository.sumExamPoints(this.pupilId);
+    }
 }

@@ -6,6 +6,8 @@ import edu.tk.examcalc.entity.Pupil;
 import javafx.scene.Cursor;
 
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,24 +17,32 @@ import java.util.Map;
 public abstract class Repository<T> {
 
     protected T entity;
-
+    private Class<T> type;
     protected Boolean naturalCase = false;
-
     protected Boolean ucFirst = false;
     protected String alias;
     protected QueryBuilder<T> queryBuilder;
 
-    public Repository() {}
+    public Repository() {
+        this.entity = createInstance();
+    }
 
     public Repository(Boolean naturalCase){
         if(naturalCase){
             this.naturalCase = naturalCase;
         }
+        this.entity = createInstance();
     }
 
-    public Repository<T> setEntity(T entity){
-        this.entity =  entity;
-        return this;
+    private T createInstance()  {
+        Type t = getClass().getGenericSuperclass();
+        ParameterizedType pt = (ParameterizedType) t;
+        type = (Class<T>) pt.getActualTypeArguments()[0];
+        try {
+            return type.getDeclaredConstructor().newInstance();
+        } catch (InvocationTargetException | NoSuchMethodException | InstantiationException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public Repository<T> setUcFirst()

@@ -230,7 +230,12 @@ public class PupilForm extends Form {
         pupil.setLastname(this.lastname.getText());
         pupil.setExamDate(this.examDate.getText());
         pupil.setBirthDate(this.birthdate.getEditor().getText());
-        pupil.setCoursePoints(Integer.parseInt(this.coursePoints.getText()));
+        try {
+            pupil.setCoursePoints(Integer.parseInt(this.coursePoints.getText()));
+        } catch (NumberFormatException ignored) {
+
+        }
+
 
         if(this.tutor.getSelectionModel().getSelectedItem() != null) {
             pupil.setTutorId(this.tutor.getSelectionModel().getSelectedItem().getId());

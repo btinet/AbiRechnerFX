@@ -3,6 +3,8 @@ package edu.tk.examcalc.component;
 import edu.tk.examcalc.entity.Pupil;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import org.controlsfx.control.tableview2.filter.popupfilter.PopupFilter;
+import org.controlsfx.control.tableview2.filter.popupfilter.PopupStringFilter;
 
 public class PupilTableData {
 
@@ -24,6 +26,7 @@ public class PupilTableData {
         if(pupil.tutorLastname != null || pupil.tutorFirstname != null) {
             tutorProperty.setValue(pupil.tutorFirstname + " " + pupil.tutorLastname);
         }
+
     }
 
     public Pupil getPupil() {

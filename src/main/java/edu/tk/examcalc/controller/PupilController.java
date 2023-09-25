@@ -34,6 +34,7 @@ import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.property.TextAlignment;
+import org.controlsfx.control.tableview2.FilteredTableView;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -58,7 +59,7 @@ public class PupilController extends Controller {
     public IconButton refreshButton;
     public IconButton exportButton;
 
-    PupilRepository pupilRepository = new PupilRepository(false);
+    PupilRepository pupilRepository = new PupilRepository();
     PupilForm pupilForm;
     private String dest;
     private final PupilTableView pupilTableView;
@@ -68,6 +69,7 @@ public class PupilController extends Controller {
     public PupilController() {
         super("pupil-index.fxml");
         pupilTableView = new PupilTableView(pupilRepository.findAllJoin());
+
     }
 
 

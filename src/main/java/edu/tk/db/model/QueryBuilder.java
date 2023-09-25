@@ -646,6 +646,21 @@ public class QueryBuilder<T> {
         return object;
     }
 
+    public Integer getScalarResult() throws SQLException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+
+        this.statement.setMaxRows(1);
+        this.statement.executeQuery();
+        ResultSet result = this.statement.getResultSet();
+
+        Integer scalarResult = null;
+
+        while (result.next()) {
+            scalarResult = result.getInt(1);
+        }
+
+        return scalarResult;
+    }
+
     public ArrayList<T> getResult() throws SQLException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
 
 

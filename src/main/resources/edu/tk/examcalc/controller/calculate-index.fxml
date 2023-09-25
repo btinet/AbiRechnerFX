@@ -4,6 +4,16 @@
 <?import javafx.scene.control.ToolBar?>
 <?import edu.tk.examcalc.component.IconButton?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.GridPane?>
+<?import impl.org.controlsfx.skin.GridRow?>
+<?import javafx.geometry.Insets?>
+<?import org.controlsfx.control.tableview2.FilteredTableView?>
 <BorderPane fx:id="content" xmlns:fx="http://javafx.com/fxml" fx:controller="edu.tk.examcalc.controller.CalculateController">
     <top>
         <ToolBar>
@@ -16,7 +26,25 @@
             <IconButton fx:id="pupilCrudButton" text="Stammdaten" />
         </ToolBar>
     </top>
-    <center>
+    <bottom>
+        <TabPane fx:id="tabPane" tabClosingPolicy="UNAVAILABLE">
+            <Tab fx:id="resultTab" text="Ergebnis">
+                <GridPane hgap="15" vgap="15">
+                    <padding><Insets top="25" right="25" bottom="25" left="25"/></padding>
 
-    </center>
+                    <Label text="Kursblock" GridPane.columnIndex="0" GridPane.rowIndex="0" prefWidth="200"/>
+                    <TextField editable="false" fx:id="coursePoints"  GridPane.columnIndex="1" GridPane.rowIndex="0" prefWidth="200"/>
+
+                    <Label text="Prüfungsblock" GridPane.columnIndex="0" GridPane.rowIndex="1" prefWidth="200"/>
+                    <TextField editable="false" fx:id="examPoints"  GridPane.columnIndex="1" GridPane.rowIndex="1" prefWidth="200"/>
+
+                    <Label text="Gesamtpunktzahl" GridPane.columnIndex="0" GridPane.rowIndex="2" prefWidth="200"/>
+                    <TextField editable="false" fx:id="sumPoints"  GridPane.columnIndex="1" GridPane.rowIndex="2" prefWidth="200"/>
+
+                    <Label text="Endnote" GridPane.columnIndex="0" GridPane.rowIndex="3" prefWidth="200"/>
+                    <TextField editable="false" fx:id="grade"  GridPane.columnIndex="1" GridPane.rowIndex="3" prefWidth="200"/>
+                </GridPane>
+            </Tab>
+        </TabPane>
+    </bottom>
 </BorderPane>

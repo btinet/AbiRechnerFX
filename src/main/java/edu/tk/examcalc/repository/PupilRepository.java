@@ -9,16 +9,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class PupilRepository extends Repository<Pupil> {
-    public PupilRepository(Boolean naturalCase) {
-        super(naturalCase);
-        setEntity(new Pupil());
-    }
 
     public ArrayList<Pupil> findAllJoin(){
         try {
             HashMap<String,String> order = new HashMap<>();
             order.put("examDate","DESC");
             setAlias("p");
+
             return this.createQueryBuilder()
                     .selectOrm()
                     .selectPublic("tutor.firstname AS tutorFirstname, tutor.lastname AS tutorLastname")
