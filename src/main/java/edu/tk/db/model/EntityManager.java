@@ -5,17 +5,17 @@ import java.sql.SQLException;
 /**
  * Der Entity-Manager verwaltet die Entitäten der jeweiligen Relationen
  */
-public class EntityManager extends Repository {
-    public EntityManager(Boolean naturalCase) {
-        super(naturalCase);
+public class EntityManager<T> extends Repository<T> {
+
+    public EntityManager() {
+        super(false);
     }
 
     /**
      *
      * @param e Entity-Objekt, dass den Datensatz enthält.
      */
-    public void persist(Entity e){
-        this.entity = e;
+    public void persist(T e){
         this.persist(e, "id");
     }
 
@@ -24,7 +24,7 @@ public class EntityManager extends Repository {
      * @param e Entity-Objekt, dass den Datensatz enthält.
      * @param field Feldname des Primärschlüssels, falls der Name vom Standard abweicht.
      */
-    public void persist(Entity e, String field){
+    public void persist(T e, String field){
         this.entity = e;
         try {
             this.createQueryBuilder()
@@ -42,8 +42,7 @@ public class EntityManager extends Repository {
      * @param e Entity-Objekt, dass den Datensatz enthält.
      * @param id Primärschlüssel des zu aktualisierenden Tupels.
      */
-    public void persist(Entity e, int id){
-        this.entity = e;
+    public void persist(T e, int id){
         this.persist(e,id,"id");
     }
 
@@ -53,7 +52,7 @@ public class EntityManager extends Repository {
      * @param id Primärschlüssel des zu aktualisierenden Tupels.
      * @param field Feldname, falls der Name des Primärschlüssels vom Standard abweicht.
      */
-    public void persist(Entity e, int id, String field){
+    public void persist(T e, int id, String field){
         this.entity = e;
         try {
             QueryBuilder qb = this.createQueryBuilder();
@@ -75,7 +74,7 @@ public class EntityManager extends Repository {
      * @param e Entity-Objekt, dass den Datensatz enthält.
      * @param id Primärschlüssel des zu entfernenden Tupels.
      */
-    public void remove(Entity e, int id){
+    public void remove(T e, int id){
         this.entity = e;
         this.remove(e,id, "id");
     }
@@ -86,7 +85,7 @@ public class EntityManager extends Repository {
      * @param id Primärschlüssel des zu entfernenden Tupels.
      * @param field Feldname, falls der Name des Primärschlüssels vom Standard abweicht.
      */
-    public void remove(Entity e, int id, String field){
+    public void remove(T e, int id, String field){
         this.entity = e;
         QueryBuilder qb = this.createQueryBuilder();
 

@@ -223,7 +223,7 @@ public class PupilForm extends Form {
 
     @Override
     public void submit() {
-        EntityManager entityManager = new EntityManager(false);
+        EntityManager<Pupil> entityManager = new EntityManager<>();
         Pupil pupil = new Pupil();
 
         pupil.setFirstname(this.firstname.getText());
@@ -249,7 +249,7 @@ public class PupilForm extends Form {
     }
 
     public void update(Pupil pupil) {
-        EntityManager entityManager = new EntityManager(false);
+        EntityManager<Pupil> entityManager = new EntityManager<>();
 
         pupil.setFirstname(this.firstname.getText());
         pupil.setLastname(this.lastname.getText());

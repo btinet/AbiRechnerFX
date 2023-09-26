@@ -22,6 +22,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -102,6 +103,25 @@ public class PupilController extends Controller {
         calculateButton.setOnAction(eventHandler);
         refreshButton.setOnAction(e -> switchToController(content,this));
         exportButton.setOnAction(this::generatePdf);
+
+        pupilTableView.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+                    Node node = ((Node) event.getTarget()).getParent();
+                    TableRow row;
+                    if (node instanceof TableRow) {
+                        row = (TableRow) node;
+                    } else {
+                        // clicking on text part
+                        row = (TableRow) node.getParent();
+                    }
+                    if(row.getItem() != null) {
+                        switchToController(content,new CalculateController());
+                    }
+                }
+            }
+        });
 
 
 

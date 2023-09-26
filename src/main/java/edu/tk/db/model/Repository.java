@@ -31,18 +31,17 @@ public abstract class Repository<T> {
         if(naturalCase){
             this.naturalCase = naturalCase;
         }
-        this.entity = createInstance();
     }
 
     private T createInstance()  {
-        Type t = getClass().getGenericSuperclass();
-        ParameterizedType pt = (ParameterizedType) t;
-        type = (Class<T>) pt.getActualTypeArguments()[0];
-        try {
-            return type.getDeclaredConstructor().newInstance();
-        } catch (InvocationTargetException | NoSuchMethodException | InstantiationException | IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
+            Type t = getClass().getGenericSuperclass();
+            ParameterizedType pt = (ParameterizedType) t;
+            type = (Class<T>) pt.getActualTypeArguments()[0];
+            try {
+                return type.getDeclaredConstructor().newInstance();
+            } catch (InvocationTargetException | NoSuchMethodException | InstantiationException | IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
     }
 
     public Repository<T> setUcFirst()
