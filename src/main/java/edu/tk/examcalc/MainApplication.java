@@ -30,6 +30,8 @@ public class MainApplication extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("index.fxml"));
 
         Scene scene = new Scene(fxmlLoader.load(), 1280, 720);
+        stage.setMinWidth(1280);
+        stage.setMinHeight(720);
         stage.setTitle("AbiRechner - Treptow-Kolleg Berlin");
         stage.getIcons().add(appImage);
         stage.setOnCloseRequest(event -> {

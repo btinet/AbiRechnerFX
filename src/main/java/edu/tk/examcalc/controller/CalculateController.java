@@ -11,6 +11,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 import java.net.URL;
@@ -40,6 +41,7 @@ public class CalculateController extends Controller {
     public TextField coursePoints;
     public TextField examPoints;
     public TextField grade;
+    public BorderPane centerPane;
 
     public CalculateController() {
         super("calculate-index.fxml");
@@ -54,6 +56,12 @@ public class CalculateController extends Controller {
     public void initialize(URL location, ResourceBundle resources) {
         setPageTitle("Prüfungen für " + this.pupil);
 
+        refreshButton.setOnAction(e -> switchToController(content,this));
+
+        if(this.pupilExams.size() == 5) {
+            newButton.setDisable(true);
+        }
+
         int sumExam = 0;
         for (Exam exam : this.pupilExams) {
             sumExam += exam.getPoints()*4;
@@ -65,7 +73,6 @@ public class CalculateController extends Controller {
 
         pupilCrudButton.setOnAction(e -> switchToController(content,new PupilController()));
         this.grade.setText(String.valueOf(Session.get("grade")));
-
-        content.setCenter(this.tableView.render());
+        centerPane.setCenter(this.tableView.render());
     }
 }

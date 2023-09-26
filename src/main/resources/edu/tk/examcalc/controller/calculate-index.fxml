@@ -26,25 +26,34 @@
             <IconButton fx:id="pupilCrudButton" text="Stammdaten" />
         </ToolBar>
     </top>
+    <center>
+        <BorderPane fx:id="centerPane">
+            <top>
+                <TabPane fx:id="tabPane" tabClosingPolicy="UNAVAILABLE">
+                    <Tab fx:id="resultTab" text="Ergebnis">
+                        <GridPane hgap="35" vgap="15">
+                            <padding><Insets top="25" right="25" bottom="25" left="25"/></padding>
+
+                            <Label text="Kursblock" GridPane.columnIndex="0" GridPane.rowIndex="0" prefWidth="100"/>
+                            <TextField editable="false" fx:id="coursePoints"  GridPane.columnIndex="1" GridPane.rowIndex="0" prefWidth="100"/>
+
+                            <Label text="Prüfungsblock" GridPane.columnIndex="2" GridPane.rowIndex="0" prefWidth="100"/>
+                            <TextField editable="false" fx:id="examPoints"  GridPane.columnIndex="3" GridPane.rowIndex="0" prefWidth="100"/>
+
+                            <Label text="Gesamtpunke" GridPane.columnIndex="4" GridPane.rowIndex="0" prefWidth="100"/>
+                            <TextField editable="false" fx:id="sumPoints"  GridPane.columnIndex="5" GridPane.rowIndex="0" prefWidth="100"/>
+
+                            <Label text="Endnote" GridPane.columnIndex="6" GridPane.rowIndex="0" prefWidth="100"/>
+                            <TextField editable="false" fx:id="grade"  GridPane.columnIndex="7" GridPane.rowIndex="0" prefWidth="100"/>
+                        </GridPane>
+                    </Tab>
+                </TabPane>
+            </top>
+
+        </BorderPane>
+
+    </center>
     <bottom>
-        <TabPane fx:id="tabPane" tabClosingPolicy="UNAVAILABLE">
-            <Tab fx:id="resultTab" text="Ergebnis">
-                <GridPane hgap="15" vgap="15">
-                    <padding><Insets top="25" right="25" bottom="25" left="25"/></padding>
 
-                    <Label text="Kursblock" GridPane.columnIndex="0" GridPane.rowIndex="0" prefWidth="200"/>
-                    <TextField editable="false" fx:id="coursePoints"  GridPane.columnIndex="1" GridPane.rowIndex="0" prefWidth="200"/>
-
-                    <Label text="Prüfungsblock" GridPane.columnIndex="0" GridPane.rowIndex="1" prefWidth="200"/>
-                    <TextField editable="false" fx:id="examPoints"  GridPane.columnIndex="1" GridPane.rowIndex="1" prefWidth="200"/>
-
-                    <Label text="Gesamtpunktzahl" GridPane.columnIndex="0" GridPane.rowIndex="2" prefWidth="200"/>
-                    <TextField editable="false" fx:id="sumPoints"  GridPane.columnIndex="1" GridPane.rowIndex="2" prefWidth="200"/>
-
-                    <Label text="Endnote" GridPane.columnIndex="0" GridPane.rowIndex="3" prefWidth="200"/>
-                    <TextField editable="false" fx:id="grade"  GridPane.columnIndex="1" GridPane.rowIndex="3" prefWidth="200"/>
-                </GridPane>
-            </Tab>
-        </TabPane>
     </bottom>
 </BorderPane>
