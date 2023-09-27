@@ -64,11 +64,6 @@ public class ExamTableData {
                 newGrade.setValue(grade - .1);
             }
         }
-
-
-
-
-
     }
 
     public Exam getExam() {

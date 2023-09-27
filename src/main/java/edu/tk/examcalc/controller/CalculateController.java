@@ -6,13 +6,13 @@ import edu.tk.examcalc.component.IconButton;
 import edu.tk.examcalc.entity.Exam;
 import edu.tk.examcalc.entity.Pupil;
 import edu.tk.examcalc.repository.ExamRepository;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -61,6 +61,20 @@ public class CalculateController extends Controller {
         if(this.pupilExams.size() == 5) {
             newButton.setDisable(true);
         }
+
+        tableView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
+            @Override
+            public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+                if(tableView.getSelectionModel().getSelectedItem() != null)
+                {
+                    Exam item = tableView.getSelectionModel().getSelectedItem().getExam();
+                    Session.set("exam",item);
+                    editButton.setDisable(false);
+                } else {
+                    editButton.setDisable(true);
+                }
+            }
+        });
 
         int sumExam = 0;
         for (Exam exam : this.pupilExams) {

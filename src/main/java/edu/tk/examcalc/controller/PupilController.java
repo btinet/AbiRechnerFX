@@ -1,20 +1,16 @@
 package edu.tk.examcalc.controller;
 
 import com.itextpdf.kernel.colors.DeviceRgb;
-import com.itextpdf.kernel.pdf.canvas.parser.listener.TextChunk;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.element.Cell;
-import com.itextpdf.layout.element.Text;
 import edu.tk.db.global.Session;
-import edu.tk.db.model.ResultSorter;
 import edu.tk.examcalc.MainApplication;
 import edu.tk.examcalc.component.*;
 import edu.tk.examcalc.entity.Exam;
 import edu.tk.examcalc.entity.Pupil;
 import edu.tk.examcalc.form.PupilForm;
 import edu.tk.examcalc.repository.PupilRepository;
-import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -35,7 +31,6 @@ import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.property.TextAlignment;
-import org.controlsfx.control.tableview2.FilteredTableView;
 
 import java.io.File;
 import java.io.FileNotFoundException;
