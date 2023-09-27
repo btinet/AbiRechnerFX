@@ -56,6 +56,12 @@ public class CalculateController extends Controller {
     public void initialize(URL location, ResourceBundle resources) {
         setPageTitle("Prüfungen für " + this.pupil);
 
+        newButton.setIcon("win10-create-new");
+        editButton.setIcon("win10-pencil");
+        exportButton.setIcon("win10-export");
+        refreshButton.setIcon("win10-refresh");
+        pupilCrudButton.setIcon("win10-gender-neutral-user");
+
         refreshButton.setOnAction(e -> switchToController(content,this));
 
         if(this.pupilExams.size() == 5) {

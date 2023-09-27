@@ -16,10 +16,12 @@ public class ExamTableData {
     private final StringProperty label = new SimpleStringProperty();
     private final IntegerProperty points = new SimpleIntegerProperty();
     private final IntegerProperty summedPoints = new SimpleIntegerProperty();
-    private final IntegerProperty summedExamPoints = new SimpleIntegerProperty();
-    private final IntegerProperty neededPoints = new SimpleIntegerProperty();
-    private final IntegerProperty neededSummedPoints = new SimpleIntegerProperty();
-    private final DoubleProperty newGrade = new SimpleDoubleProperty();
+    private final StringProperty neededIntegerPoints = new SimpleStringProperty();
+    private final StringProperty summedExamPoints = new SimpleStringProperty();
+    private final StringProperty neededPoints = new SimpleStringProperty();
+    private final StringProperty neededSummedPoints = new SimpleStringProperty();
+    private final StringProperty newGrade = new SimpleStringProperty();
+    private final StringProperty criticalPoints = new SimpleStringProperty();
 
     public ExamTableData(Exam exam) {
         Pupil pupil =(Pupil) Session.copy("pupil");
@@ -27,6 +29,7 @@ public class ExamTableData {
 
         Double grade = 0.0;
         boolean lowerEnd = false;
+        int prevKey = 0;
         int currentKey = 0;
         int nextKey = 0;
         int sumPoints = exam.getSummedExamPoints() + pupil.getCoursePoints();
@@ -34,9 +37,12 @@ public class ExamTableData {
         ArrayList<Integer> grades = new ArrayList<>(Grades.GRADE.keySet());
         Collections.sort(grades);
         for (Integer entry : grades) {
+            if(sumPoints > entry) {
+                prevKey = entry;
+                System.out.println("schlechter: " + prevKey);
+            }
             if(sumPoints >= entry) {
                 currentKey = entry;
-                System.out.println("Punkte: " + currentKey);
                 lowerEnd = true;
             }
             if(lowerEnd && sumPoints < entry) {
@@ -54,20 +60,41 @@ public class ExamTableData {
         this.summedPoints.setValue(exam.getPoints()*4);
 
         if(exam.getExamNumber() != null && exam.getExamNumber() <= 3) {
+            int lowerZwischenSumme = exam.getPoints()*4 +prevKey-sumPoints;
             int zwischenSumme = exam.getPoints()*4 + nextKey-sumPoints;
-            int x = zwischenSumme/4+(exam.getPoints()/3*2);
+            System.out.println("Zwischensumme: " + zwischenSumme);
+
+            double lowerX = (double) lowerZwischenSumme*3/4 -(exam.getPoints()*2);
+            System.out.println("Schlechter unter: " + lowerX);
+            double x = (double) zwischenSumme *3/4 -(exam.getPoints()*2);
 
             if(x < 15) {
-                neededPoints.setValue(x);
-                neededSummedPoints.setValue(exam.getPoints()*4 + nextKey-sumPoints);
-                summedExamPoints.setValue(nextKey);
-                newGrade.setValue(grade - .1);
+                int roundedX = (int) Math.round(lowerX);
+                if(roundedX >= 0) {
+                    criticalPoints.setValue(String.valueOf(roundedX));
+                } else {
+                    criticalPoints.setValue("ohne Risiko");
+                }
+                neededPoints.setValue(String.valueOf(x));
+                neededIntegerPoints.setValue(String.valueOf(getNeededPoints()));
+                neededSummedPoints.setValue(String.valueOf(zwischenSumme));
+                summedExamPoints.setValue(String.valueOf(nextKey));
+                newGrade.setValue(String.valueOf(grade - .1));
             }
         }
     }
 
     public Exam getExam() {
         return exam;
+    }
+
+    public int getNeededPoints() {
+        if(neededPoints.get() != null) {
+            return (int) Double.parseDouble(neededPoints.get());
+        } else {
+            return 0;
+        }
+
     }
 
     public int getExamNumber() {
@@ -78,20 +105,12 @@ public class ExamTableData {
         return examNumber;
     }
 
-    public void setExamNumber(int examNumber) {
-        this.examNumber.set(examNumber);
-    }
-
     public String getLabel() {
         return label.get();
     }
 
     public StringProperty labelProperty() {
         return label;
-    }
-
-    public void setLabel(String label) {
-        this.label.set(label);
     }
 
     public int getPoints() {
@@ -102,10 +121,6 @@ public class ExamTableData {
         return points;
     }
 
-    public void setPoints(int points) {
-        this.points.set(points);
-    }
-
     public int getSummedPoints() {
         return summedPoints.get();
     }
@@ -114,55 +129,47 @@ public class ExamTableData {
         return summedPoints;
     }
 
-    public void setSummedPoints(int summedPoints) {
-        this.summedPoints.set(summedPoints);
-    }
-
-    public int getSummedExamPoints() {
+    public String getSummedExamPoints() {
         return summedExamPoints.get();
     }
 
-    public IntegerProperty summedExamPointsProperty() {
+    public StringProperty summedExamPointsProperty() {
         return summedExamPoints;
     }
 
-    public void setSummedExamPoints(int summedExamPoints) {
-        this.summedExamPoints.set(summedExamPoints);
-    }
-
-    public int getNeededPoints() {
-        return neededPoints.get();
-    }
-
-    public IntegerProperty neededPointsProperty() {
+    public StringProperty neededPointsProperty() {
         return neededPoints;
     }
 
-    public void setNeededPoints(int neededPoints) {
-        this.neededPoints.set(neededPoints);
-    }
-
-    public int getNeededSummedPoints() {
+    public String getNeededSummedPoints() {
         return neededSummedPoints.get();
     }
 
-    public IntegerProperty neededSummedPointsProperty() {
+    public StringProperty neededSummedPointsProperty() {
         return neededSummedPoints;
     }
 
-    public void setNeededSummedPoints(int neededSummedPoints) {
-        this.neededSummedPoints.set(neededSummedPoints);
-    }
-
-    public double getNewGrade() {
+    public String getNewGrade() {
         return newGrade.get();
     }
 
-    public DoubleProperty newGradeProperty() {
+    public StringProperty newGradeProperty() {
         return newGrade;
     }
 
-    public void setNewGrade(double newGrade) {
-        this.newGrade.set(newGrade);
+    public String getCriticalPoints() {
+        return criticalPoints.get();
+    }
+
+    public StringProperty criticalPointsProperty() {
+        return criticalPoints;
+    }
+
+    public String getNeededIntegerPoints() {
+        return neededIntegerPoints.get();
+    }
+
+    public StringProperty neededIntegerPointsProperty() {
+        return neededIntegerPoints;
     }
 }

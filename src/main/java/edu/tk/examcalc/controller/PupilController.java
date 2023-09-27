@@ -50,7 +50,6 @@ public class PupilController extends Controller {
     public Tab exportTab;
     public IconButton newButton;
     public IconButton editButton;
-    public IconButton showButton;
     public IconButton calculateButton;
     public IconButton refreshButton;
     public IconButton exportButton;
@@ -87,13 +86,11 @@ public class PupilController extends Controller {
         newButton.setIcon("win10-create-new");
         refreshButton.setIcon("win10-refresh");
         editButton.setIcon("win10-pencil");
-        showButton.setIcon("win10-gender-neutral-user");
         calculateButton.setIcon("win10-share");
         exportButton.setIcon("win10-export");
 
         // Set Actions
         newButton.setOnAction(event -> pupilForm.showAndWait(this));
-        showButton.setOnAction(event -> pupilForm.viewAndWait(this));
         editButton.setOnAction(event -> pupilForm.editAndWait(this));
         calculateButton.setOnAction(eventHandler);
         refreshButton.setOnAction(e -> switchToController(content,this));
@@ -136,12 +133,10 @@ public class PupilController extends Controller {
                     Pupil item = pupilTableView.getSelectionModel().getSelectedItem().getPupil();
                     Session.set("pupil",item);
                     editButton.setDisable(false);
-                    showButton.setDisable(false);
                     calculateButton.setDisable(false);
                     exportButton.setDisable(false);
                 } else {
                     editButton.setDisable(true);
-                    showButton.setDisable(true);
                     calculateButton.setDisable(true);
                     exportButton.setDisable(true);
                 }
