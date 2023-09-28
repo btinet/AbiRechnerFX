@@ -7,6 +7,10 @@ public class SchoolSubject extends Entity {
     protected int id;
     protected String label;
 
+    public String toString() {
+        return this.label;
+    }
+
     public int getId() {
         return id;
     }

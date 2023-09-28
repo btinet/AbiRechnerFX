@@ -5,6 +5,7 @@ import edu.tk.examcalc.entity.Exam;
 import edu.tk.examcalc.entity.Pupil;
 import javafx.beans.property.*;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -49,6 +50,10 @@ public class ExamTableData {
                 nextKey = entry;
                 break;
             }
+            if(sumPoints >= 823) {
+                grade = 1.0;
+                nextKey = currentKey;
+            }
         }
         Session.set("grade",grade);
 
@@ -67,18 +72,20 @@ public class ExamTableData {
             System.out.println("Schlechter unter: " + lowerX);
             double x = (double) zwischenSumme *3/4 -(exam.getPoints()*2);
 
-            if(x < 15) {
+            if(x < 15 && sumPoints < 823) {
                 int roundedX = (int) Math.round(lowerX);
                 if(roundedX >= 0) {
                     criticalPoints.setValue(String.valueOf(roundedX));
                 } else {
                     criticalPoints.setValue("ohne Risiko");
                 }
+                DecimalFormat df = new DecimalFormat("#.#");
+
                 neededPoints.setValue(String.valueOf(x));
                 neededIntegerPoints.setValue(String.valueOf(getNeededPoints()));
                 neededSummedPoints.setValue(String.valueOf(zwischenSumme));
                 summedExamPoints.setValue(String.valueOf(nextKey));
-                newGrade.setValue(String.valueOf(grade - .1));
+                newGrade.setValue(df.format(grade - .1));
             }
         }
     }

@@ -28,9 +28,6 @@ public abstract class Repository<T> {
     }
 
     public Repository(Boolean naturalCase){
-        if(Database.getConnection() == null) {
-            Database.connect();
-        }
         if(naturalCase){
             this.naturalCase = naturalCase;
         }

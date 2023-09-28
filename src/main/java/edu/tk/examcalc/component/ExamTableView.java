@@ -4,12 +4,13 @@ import edu.tk.examcalc.entity.Exam;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
-import javafx.scene.control.TableView;
+import javafx.collections.ListChangeListener;
+import javafx.geometry.Insets;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 
 import java.util.ArrayList;
 
@@ -40,16 +41,16 @@ public class ExamTableView extends TableView<ExamTableData> {
             protected void updateItem(ExamTableData item, boolean empty) {
                 super.updateItem(item, empty);
                 if (item == null || item.getNeededPoints() == 0) {
-                    setStyle("");
+                    setStyle("-fx-border-color: none;");
                 }
                 else if (item.getNeededPoints() > 0) {
-                    setStyle("-fx-background-color: lightseagreen;");
+
                 }
                 else if (item.getNeededPoints() < 0) {
-                    setStyle("-fx-background-color: #ffd7d1;");
+                    setStyle("-fx-border-color: none;");
                 }
                 else {
-                    setStyle("");
+                    setStyle("-fx-border-color: none;");
                 }
                 if(getTableView().getSelectionModel().getSelectedItems().contains(item))
                     setTextFill(Color.WHITE);
@@ -58,6 +59,10 @@ public class ExamTableView extends TableView<ExamTableData> {
 
             }
         });
+
+
+
+
 
 
 
