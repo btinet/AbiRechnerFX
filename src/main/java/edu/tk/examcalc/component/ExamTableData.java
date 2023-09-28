@@ -39,7 +39,6 @@ public class ExamTableData {
         for (Integer entry : grades) {
             if(sumPoints > entry) {
                 prevKey = entry;
-                System.out.println("schlechter: " + prevKey);
             }
             if(sumPoints >= entry) {
                 currentKey = entry;
