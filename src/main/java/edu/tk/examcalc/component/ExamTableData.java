@@ -27,7 +27,7 @@ public class ExamTableData {
         Pupil pupil =(Pupil) Session.copy("pupil");
         assert pupil != null;
 
-        Double grade = 0.0;
+        double grade = 0.0;
         boolean lowerEnd = false;
         int prevKey = 0;
         int currentKey = 0;
