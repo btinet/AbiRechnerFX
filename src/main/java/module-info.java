@@ -2,6 +2,7 @@ module edu.tk.fxcontrollertest {
     requires javafx.controls;
     requires javafx.fxml;
 
+    requires org.jfxtras.styles.jmetro;
     requires org.controlsfx.controls;
     requires org.kordamp.ikonli.javafx;
     requires java.sql;
