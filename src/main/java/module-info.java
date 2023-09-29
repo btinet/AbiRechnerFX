@@ -9,6 +9,7 @@ module edu.tk.fxcontrollertest {
     requires io;
     requires kernel;
     requires layout;
+    requires aquafx;
 
     opens edu.tk.examcalc to javafx.fxml;
     opens edu.tk.examcalc.entity to javafx.base;

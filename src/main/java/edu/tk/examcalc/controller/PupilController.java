@@ -11,6 +11,7 @@ import edu.tk.examcalc.entity.Exam;
 import edu.tk.examcalc.entity.Pupil;
 import edu.tk.examcalc.form.PupilForm;
 import edu.tk.examcalc.repository.PupilRepository;
+import edu.tk.examcalc.service.PDFExportService;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -56,7 +57,6 @@ public class PupilController extends Controller {
 
     PupilRepository pupilRepository = new PupilRepository();
     PupilForm pupilForm;
-    private String dest;
     private final PupilTableView pupilTableView;
 
     private ArrayList<Exam> currentExams;
@@ -94,7 +94,7 @@ public class PupilController extends Controller {
         editButton.setOnAction(event -> pupilForm.editAndWait(this));
         calculateButton.setOnAction(eventHandler);
         refreshButton.setOnAction(e -> switchToController(content,this));
-        exportButton.setOnAction(this::generatePdf);
+        exportButton.setOnAction(PDFExportService::new);
 
         pupilTableView.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
@@ -145,178 +145,6 @@ public class PupilController extends Controller {
 
         // Tab Contents
         listTab.setContent(pupilTableView.render());
-    }
-
-    public void generatePdf(ActionEvent actionEvent) {
-        Pupil currentPupil = (Pupil) Session.copy("pupil");
-        if(currentPupil != null) {
-            this.currentExams = currentPupil.getExams();
-
-            while (true) {
-                if(this.currentExams != null) {
-                    break;
-                }
-            }
-            savePdf(actionEvent);
-        }
-
-    }
-
-    public void savePdf(ActionEvent actionEvent)  {
-        Node source = (Node) actionEvent.getSource();
-        Window stage = source.getScene().getWindow();
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Ergebnis speichern");
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF Dokument (*.pdf)", "*.pdf"));
-        fileChooser.setInitialFileName(Session.copy("pupil")+".pdf");
-        File file = fileChooser.showSaveDialog(stage);
-        if (file != null) {
-            System.out.println(file.getAbsolutePath());
-            this.dest = file.getAbsolutePath();
-        }
-
-        Document document = null;
-        PdfFont headline = null;
-        PdfFont normal = null;
-        PdfFont italic = null;
-        try {
-            headline = PdfFontFactory.createFont(StandardFonts.COURIER_BOLD);
-            normal = PdfFontFactory.createFont(StandardFonts.COURIER);
-            italic = PdfFontFactory.createFont(StandardFonts.COURIER_OBLIQUE);
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        try (PdfDocument pdf = new PdfDocument(new PdfWriter(dest))) {
-            document = new Document(pdf).setTextAlignment(TextAlignment.JUSTIFIED);
-            document.add(new Paragraph());
-            Pupil currentPupil = (Pupil) Session.copy("pupil");
-            if(currentPupil != null) {
-                Paragraph title = new Paragraph("Punkteübersicht und Zusatzprüfungen");
-                title.setFont(headline);
-                title.setFontSize(16);
-
-                Table table = new Table(new float[8]).useAllAvailableWidth();
-                table.setMarginTop(25);
-                table.setMarginBottom(25);
-                table.setFontSize(8);
-                table.setFont(normal);
-
-                Cell cell = new Cell(1, 8).add(new Paragraph("Prüfungsergebnisse"));
-                cell.setTextAlignment(TextAlignment.CENTER);
-                cell.setPadding(5);
-                cell.setBackgroundColor(new DeviceRgb(220, 220, 220));
-                table.addCell(cell);
-                table.addCell(new Cell(1,3));
-                table.addCell("Gesamtpunktzahl");
-                table.addCell(new Cell(1,4));
-                table.startNewRow();
-
-                table.addCell(new Cell(1,3).add(new Paragraph("Kursblock")));
-                table.addCell(currentPupil.getCoursePoints().toString());
-
-                Integer sumPoints = currentPupil.getCoursePoints();
-
-                table.addCell(new Cell(1,4));
-                table.addCell(new Cell(1,8));
-
-                table.addCell(new Cell(1,4).add(new Paragraph("Prüfungsblock")));
-                table.addCell(new Cell(1,2).add(new Paragraph("Zusatzprüfung")));
-                table.addCell(new Cell(1,2).add(new Paragraph("Endergebnis")));
-
-                table.addCell("Nr.");
-                table.addCell("Fach");
-                table.addCell("Punkte");
-                table.addCell("Zwischensumme");
-                table.addCell("notwendige Punkte");
-                table.addCell("Zwischensumme");
-                table.addCell("Gesamtpunktzahl");
-                table.addCell("Endnote");
-
-                for (Exam exam : this.currentExams) {
-                    sumPoints += (exam.getPoints()*4);
-                }
-
-                Double grade = 0.0;
-                boolean lowerEnd = false;
-                int currentKey = 0;
-                int nextKey = 0;
-
-                ArrayList<Integer> grades = new ArrayList<>(Grades.GRADE.keySet());
-                Collections.sort(grades);
-                for (Integer entry : grades) {
-                    if(sumPoints >= entry) {
-                        currentKey = entry;
-                        System.out.println("Punkte: " + currentKey);
-                        lowerEnd = true;
-                    }
-                    if(lowerEnd && sumPoints < entry) {
-                        grade = Grades.GRADE.get(currentKey);
-                        nextKey = entry;
-                        break;
-                    }
-                }
-
-                for (Exam exam : this.currentExams) {
-                    table.addCell(String.valueOf(exam.getExamNumber()));
-                    table.addCell(exam.getSchoolSubject().getLabel());
-                    table.addCell(exam.getPoints().toString());
-                    table.addCell(String.valueOf(exam.getPoints()*4));
-                    if(exam.getExamNumber() != null && exam.getExamNumber() <= 3) {
-                        int zwischenSumme = exam.getPoints()*4 + nextKey-sumPoints;
-                        int x = zwischenSumme/4+(exam.getPoints()/3*2);
-
-                        if(x < 15) {
-                            table.addCell(String.valueOf(x));
-                            table.addCell(String.valueOf(exam.getPoints()*4 + nextKey-sumPoints));
-                            table.addCell(String.valueOf(nextKey));
-                            table.addCell(String.valueOf(grade - .1));
-                        } else {
-                            table.addCell(new Cell(1,4));
-                        }
-                    } else {
-                        table.addCell(new Cell(1,4));
-                    }
-                }
-
-                table.addCell(new Cell(1,3).add(new Paragraph("Gesamtpunktzahl")));
-                table.addCell(sumPoints.toString());
-                table.addCell(new Cell(1,4));
-
-
-
-                table.addCell(new Cell(1,3).add(new Paragraph("Endnote")));
-                assert grade != null;
-                table.addCell(grade.toString());
-                table.addCell(new Cell(1,4).add(new Paragraph("fehlende Punkte bis zur besseren Note: " + (nextKey-sumPoints)).setFont(italic)));
-
-
-                document.add(title);
-                document.add(new Paragraph(currentPupil + ", geboren am "+ currentPupil.getBirthDate()).setFont(normal).setFontSize(11));
-                if(currentPupil.getTutor() != null) {
-                    document.add(new Paragraph("Tutorium: " + currentPupil.getTutor().toString()).setFont(normal).setFontSize(11));
-                }
-                document.add(table);
-                //document.add(new Paragraph(currentPupil + " wird im Abschlussjahr " + currentPupil.getExamDate() + " das Abitur ablegen und dabei eine Endnote von " + grade + " erhalten. Diese kann durch ablegen einer der oben vorgeschlagenen Zusatzprüfungen auf " + (grade - .1) + " verbessert werden. Bis zur nächst besseren Note fehlen insgesamt " + (nextKey-sumPoints) + " Punkte.").setFont(normal).setFontSize(11));
-
-            }
-
-            Alert pdfSavedAltert = new Alert(Alert.AlertType.INFORMATION);
-            Stage alertStage = (Stage) pdfSavedAltert.getDialogPane().getScene().getWindow();
-            alertStage.getIcons().add(MainApplication.appImage);
-            pdfSavedAltert.setTitle("Akte exportieren");
-            pdfSavedAltert.setHeaderText("Punkteübersicht exportieren");
-            pdfSavedAltert.setContentText("Die Punkteübersicht wurde erfolgreich als PDF-Dokument gespeichert.");
-            pdfSavedAltert.show();
-
-        } catch (FileNotFoundException e) {
-            System.out.println(e.getMessage());
-        } catch (NullPointerException ignored) {
-        } finally {
-            if (document != null) document.close();
-        }
-
     }
 
 }

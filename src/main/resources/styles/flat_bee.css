@@ -7,10 +7,10 @@
 *	Version 1.0.0
 *
 * The license is pretty much a CC-BY-NC 4.0 license (https://creativecommons.org/licenses/by-nc/4.0/).
-* In simple (non legal) english :
-* you can modify and distribute it, ship in in your application,
+* In simple (non legal) english : 
+* you can modify and distribute it, ship in in your application, 
 * but not use/sell it commercially.
-* And you have to give credits,
+* And you have to give credits, 
 * like "FlatBee theme by karlthebee (https://github.com/karlthebee/flatbee)"
 */
 
@@ -39,15 +39,15 @@
 }
 
 #flatbee-tiny{
-	-fx-font-size : 8.0;
+	-fx-font-size : 8.0;	
 }
 
 #flatbee-small{
-	-fx-font-size : 10.0;
+	-fx-font-size : 10.0;	
 }
 
 #flatbee-medium{
-	-fx-font-size : 12.0;
+	-fx-font-size : 12.0;	
 }
 
 #flatbee-large{
@@ -106,7 +106,7 @@
  * **********
  * BUTTONS
  * **********
- *
+ * 
  */
 .button {
 	-fx-background-color : -gray,-gray,-gray,-gray;
@@ -163,7 +163,7 @@
  * **********
  * PROGRESSBAR
  * **********
- *
+ * 
  */
 .progress-indicator {
 	-fx-indeterminate-segment-count : 12;
@@ -174,11 +174,11 @@
 .progress-bar>*.bar{
 	 -fx-background-color : -color;
  }
-
+ 
 .progress-bar>*.track{
 	 -fx-background-color : -gray;
  }
-
+ 
 .progress-bar:determinate>*.determinate-indicator>*.track{
 	 -fx-background-color : -gray;
  }
@@ -186,12 +186,12 @@
 .progress-bar:determinate>*.determinate-indicator>*.indicator{
 	 -fx-background-color : -gray;
  }
-
+ 
  /*
  * **********
  * DATE PICKER
  * **********
- *
+ * 
  */
 .date-picker{
 	-fx-background-color : -white,-gray,gray;
@@ -200,7 +200,7 @@
 .date-picker>*.arrow-button{
 	-fx-background-color : -white,-gray,-gray;
 }
-
+ 
  .date-picker>*.arrow-button>*.arrow{
 	-fx-background-color : -darkGray, -black;
 }
@@ -208,7 +208,7 @@
  * **********
  * SLIDER
  * **********
- *
+ * 
  */
  .slider>*.track{
 	 -fx-background-color : -gray;
@@ -225,7 +225,7 @@
  * **********
  * COMBOBOX
  * **********
- *
+ * 
  */
 .combo-box {
 	-fx-background-color : -gray;
@@ -240,7 +240,7 @@
  * **********
  * TABPANE
  * **********
- *
+ * 
  */
  .tab-pane>*.tab-header-area{
 	 -fx-padding : 0,0,0,0;
@@ -274,50 +274,50 @@
  * **********
  * MENU
  * **********
- *
+ * 
  */
 .menu-bar{
 	-fx-background-color : -gray;
 }
-
+ 
 
 /*
  * **********
  * Checkbox
  * **********
- *
+ * 
  */
  .check-box>*.box{
 	 -fx-background-color : -gray;
  }
-
+ 
  .check-box:selected>*.box>*.mark{
 	 -fx-background-color : -black;
  }
 .check-box:indeterminate>*.box>*.mark{
 	 -fx-background-color : -black;
  }
-
-
+ 
+ 
  /*
  * **********
  * RADIO BUTTONS
  * **********
- *
+ * 
  */
  .radio-button>*.radio{
-	-fx-background-color : -gray;
+	-fx-background-color : -gray; 
  }
-
+ 
  .radio-button:selected>*.radio>*.dot{
 	 -fx-background-color : -black;
  }
-
+ 
 /*
  * **********
  * Text fields / inputs
  * **********
- *
+ * 
  */
 .text-field{
 	-fx-highlight-fill : -color;
@@ -328,7 +328,7 @@
 	-fx-highlight-fill : -color;
 	-fx-highlight-text-fill : -white;
 }
-
+ 
 .spinner>*.increment-arrow-button{
 	-fx-background-color : -gray;
 }
@@ -340,7 +340,7 @@
  * **********
  * Titled Pane
  * **********
- *
+ * 
  */
 
 .first-titled-pane:expanded>*.title{
@@ -363,7 +363,7 @@
  * **********
  * Table
  * **********
- *
+ * 
  */
 .table-view:row-selection{
 	-fx-background-color : -gray;
@@ -419,7 +419,7 @@
  * **********
  * Color picker
  * **********
- *
+ * 
  */
 .color-picker{
 	-fx-background-color : -gray;
@@ -429,7 +429,7 @@
  * **********
  * Scroll pane
  * **********
- *
+ * 
  */
 .scroll-pane>*.scroll-bar{
 	-fx-background-color : -gray;

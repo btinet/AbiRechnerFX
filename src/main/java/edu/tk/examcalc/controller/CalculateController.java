@@ -9,6 +9,7 @@ import edu.tk.examcalc.entity.Pupil;
 import edu.tk.examcalc.form.ExamForm;
 import edu.tk.examcalc.form.Form;
 import edu.tk.examcalc.repository.ExamRepository;
+import edu.tk.examcalc.service.PDFExportService;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -72,6 +73,7 @@ public class CalculateController extends Controller {
 
         newButton.setOnAction(e -> examForm.showAndWait(this));
         refreshButton.setOnAction(e -> switchToController(content,this));
+        exportButton.setOnAction(PDFExportService::new);
 
         if(this.pupilExams.size() == 5) {
             newButton.setDisable(true);

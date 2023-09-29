@@ -7,8 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import jfxtras.styles.jmetro.JMetro;
-import jfxtras.styles.jmetro.Style;
+import com.aquafx_project.AquaFx;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -31,8 +30,8 @@ public class MainApplication extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("index.fxml"));
 
         Scene scene = new Scene(fxmlLoader.load(), 1280, 720);
-        //scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles/dark.css")).toExternalForm());
-        //new JMetro(Style.LIGHT).setParent(scene.getRoot());
+        //scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles/caspian.css")).toExternalForm());
+        //AquaFx.style();
         stage.setMinWidth(1280);
         stage.setMinHeight(720);
         stage.setTitle("AbiRechner - Treptow-Kolleg Berlin");

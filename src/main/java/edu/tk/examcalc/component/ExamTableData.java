@@ -66,10 +66,7 @@ public class ExamTableData {
         if(exam.getExamNumber() != null && exam.getExamNumber() <= 3) {
             int lowerZwischenSumme = exam.getPoints()*4 +prevKey-sumPoints;
             int zwischenSumme = exam.getPoints()*4 + nextKey-sumPoints;
-            System.out.println("Zwischensumme: " + zwischenSumme);
-
             double lowerX = (double) lowerZwischenSumme*3/4 -(exam.getPoints()*2);
-            System.out.println("Schlechter unter: " + lowerX);
             double x = (double) zwischenSumme *3/4 -(exam.getPoints()*2);
 
             if(x < 15 && sumPoints < 823) {
