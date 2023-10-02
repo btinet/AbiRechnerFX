@@ -3,13 +3,15 @@ package edu.tk.examcalc.form;
 import edu.tk.db.global.Session;
 import edu.tk.db.model.EntityManager;
 import edu.tk.examcalc.component.DialogComponent;
-import edu.tk.examcalc.controller.Controller;
 import edu.tk.examcalc.controller.PupilController;
 import edu.tk.examcalc.entity.Pupil;
 import edu.tk.examcalc.entity.Tutor;
 import edu.tk.examcalc.repository.TutorRepository;
-import javafx.event.ActionEvent;
-import javafx.scene.control.*;
+
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -17,13 +19,11 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.util.converter.DateTimeStringConverter;
-import javafx.util.converter.LocalDateStringConverter;
 import org.controlsfx.control.SearchableComboBox;
 import org.controlsfx.control.textfield.CustomTextField;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class PupilForm extends Form {
@@ -38,7 +38,7 @@ public class PupilForm extends Form {
     private boolean hasExamDate = false;
     private final SearchableComboBox<Tutor> tutor = new SearchableComboBox<>();
     private final Label errorLabel = new Label();
-    private DialogComponent dialog;
+    private final DialogComponent dialog;
 
     public PupilForm(DialogComponent dialog) {
 
@@ -121,7 +121,6 @@ public class PupilForm extends Form {
 
         TutorRepository tutorRepository = new TutorRepository();
         ArrayList<Tutor> tutors = tutorRepository.findAll();
-        System.out.println(tutors);
         if(tutors != null) {
             tutor.getItems().addAll(tutors);
         }
@@ -141,12 +140,10 @@ public class PupilForm extends Form {
         dialog.setHeaderText("Datensatz hinzufügen");
         dialog.showAndWait().ifPresent(response -> {
             if (response.getButtonData() == dialog.getSubmitButtonType().getButtonData()) {
-                System.out.println("Gespeichert");
                 submit();
                 controller.switchToController(controller.content,controller);
             }
             if (response.getButtonData() == dialog.getCancelButtonType().getButtonData()) {
-                System.out.println("Abgebrochen");
                 cancel();
             }
         });
@@ -167,12 +164,10 @@ public class PupilForm extends Form {
 
             dialog.showAndWait().ifPresent(response -> {
                 if (response.getButtonData() == dialog.getSubmitButtonType().getButtonData()) {
-                    System.out.println("Gespeichert");
                     update(currentPupil);
                     controller.switchToController(controller.content, controller);
                 }
                 if (response.getButtonData() == dialog.getCancelButtonType().getButtonData()) {
-                    System.out.println("Abgebrochen");
                     cancel();
                 }
             });
@@ -205,11 +200,9 @@ public class PupilForm extends Form {
 
             dialog.showAndWait().ifPresent(response -> {
                 if (response.getButtonData() == dialog.getSubmitButtonType().getButtonData()) {
-                    System.out.println("Gespeichert");
                     cancel();
                 }
                 if (response.getButtonData() == dialog.getCancelButtonType().getButtonData()) {
-                    System.out.println("Abgebrochen");
                     cancel();
                 }
             });
@@ -243,7 +236,6 @@ public class PupilForm extends Form {
             pupil.setTutorId(null);
         }
 
-        System.out.println(pupil);
         entityManager.persist(pupil);
         cancel();
     }

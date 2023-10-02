@@ -28,6 +28,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.logging.Logger;
 
 public class PDFExportService {
 
@@ -57,7 +58,7 @@ public class PDFExportService {
         fileChooser.setInitialFileName(Session.copy("pupil")+".pdf");
         File file = fileChooser.showSaveDialog(stage);
         if (file != null) {
-            System.out.println(file.getAbsolutePath());
+            Logger.getLogger(getClass().getName()).info(file.getAbsolutePath());
             this.dest = file.getAbsolutePath();
         }
 
@@ -206,7 +207,7 @@ public class PDFExportService {
             pdfSavedAltert.show();
 
         } catch (FileNotFoundException e) {
-            System.out.println(e.getMessage());
+            Logger.getLogger(getClass().getName()).info(e.getMessage());
         } catch (NullPointerException ignored) {
         } finally {
             if (document != null) document.close();

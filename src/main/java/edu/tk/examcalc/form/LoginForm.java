@@ -71,12 +71,10 @@ public class LoginForm extends Form {
         User user = repository.findOneBy(loginCondition.getMap());
 
         if(user != null) {
-            System.out.println("Einloggen!");
             Session.setUser(user);
             Controller.login.setValue(true);
 
         } else {
-            System.out.println("Zugangsdaten sind falsch!");
             errorLabel.setText("Das hat leider nicht geklappt.");
         }
     }

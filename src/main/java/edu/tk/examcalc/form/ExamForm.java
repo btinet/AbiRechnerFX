@@ -136,12 +136,10 @@ public class ExamForm extends Form {
         dialog.setHeaderText("Datensatz hinzufügen");
         dialog.showAndWait().ifPresent(response -> {
             if (response.getButtonData() == dialog.getSubmitButtonType().getButtonData()) {
-                System.out.println("Gespeichert");
                 submit();
                 controller.switchToController(controller.content, controller);
             }
             if (response.getButtonData() == dialog.getCancelButtonType().getButtonData()) {
-                System.out.println("Abgebrochen");
                 cancel();
             }
         });
@@ -154,10 +152,8 @@ public class ExamForm extends Form {
         if (currentPupil != null) {
             dialog.showAndWait().ifPresent(response -> {
                 if (response.getButtonData() == dialog.getSubmitButtonType().getButtonData()) {
-                    System.out.println("Gespeichert");
                 }
                 if (response.getButtonData() == dialog.getCancelButtonType().getButtonData()) {
-                    System.out.println("Abgebrochen");
                 }
             });
         }

@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 public class QueryBuilder<T> {
 
@@ -57,9 +58,8 @@ public class QueryBuilder<T> {
         this.naturalCase = naturalCase;
         this.ucFirst = ucFirst;
         this.alias = alias;
-        System.out.println();
-        System.out.println("Neue SQL-Abfrage generieren:");
-        System.out.println("============================");
+        Logger.getLogger(getClass().getName()).info("Neue SQL-Abfrage generieren:");
+        Logger.getLogger(getClass().getName()).info("============================");
     }
 
     private String generateSnakeTailString(String value)
@@ -315,13 +315,13 @@ public class QueryBuilder<T> {
 
     public QueryBuilder<T> setParameter(Integer parameter, int value){
         this.integerParameters.put(parameter, value);
-        System.out.println(parameter + ". ? ist: " + value);
+        Logger.getLogger(getClass().getName()).info(parameter + ". ? ist: " + value);
         return this;
     }
 
     public QueryBuilder<T> setParameter(Integer parameter, String value){
         this.stringParameters.put(parameter, value);
-        System.out.println(parameter + ". ? ist: " + value);
+        Logger.getLogger(getClass().getName()).info(parameter + ". ? ist: " + value);
         return this;
     }
 
@@ -362,7 +362,7 @@ public class QueryBuilder<T> {
             }
         }
 
-        System.out.println("UPDATE Query: " + this.query);
+        Logger.getLogger(getClass().getName()).info("UPDATE Query: " + this.query);
         Platform.runLater(() -> {
             Kernel.activityStringProperty.setValue(this.query.toString());
             try {
@@ -419,7 +419,7 @@ public class QueryBuilder<T> {
             }
         }
 
-        System.out.println("DELETE Query: " + this.query);
+        Logger.getLogger(getClass().getName()).info("DELETE Query: " + this.query);
         Platform.runLater(() -> {
             Kernel.activityStringProperty.setValue(this.query.toString());
             try {
@@ -466,7 +466,7 @@ public class QueryBuilder<T> {
             }
         }
 
-        System.out.println("INSERT Query: " + this.query);
+        Logger.getLogger(getClass().getName()).info("INSERT Query: " + this.query);
         Platform.runLater(() -> {
             Kernel.activityStringProperty.setValue(this.query.toString());
             try {
@@ -537,7 +537,7 @@ public class QueryBuilder<T> {
                 }
             }
         }
-        System.out.println(this.query);
+        Logger.getLogger(getClass().getName()).info(String.valueOf(this.query));
         Platform.runLater(() -> {
             Kernel.activityStringProperty.setValue(this.query.toString());
             try {
@@ -553,7 +553,7 @@ public class QueryBuilder<T> {
     public void getPersistResult() {
         try {
             Boolean done = this.statement.execute();
-            System.out.println("Anzahl betroffener Tupel: " + this.statement.getUpdateCount());
+            Logger.getLogger(getClass().getName()).info("Anzahl betroffener Tupel: " + this.statement.getUpdateCount());
         } catch (SQLException e) {
             System.err.println(e.getMessage());
             System.err.println("Fehlercode: " + e.getSQLState());
