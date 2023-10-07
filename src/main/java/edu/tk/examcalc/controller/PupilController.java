@@ -54,17 +54,13 @@ public class PupilController extends Controller {
     public IconButton calculateButton;
     public IconButton refreshButton;
     public IconButton exportButton;
-
-    PupilRepository pupilRepository = new PupilRepository();
-    PupilForm pupilForm;
+    private PupilForm pupilForm;
     private final PupilTableView pupilTableView;
-
-    private ArrayList<Exam> currentExams;
 
     public PupilController() {
         super("pupil-index.fxml");
+        PupilRepository pupilRepository = new PupilRepository();
         pupilTableView = new PupilTableView(pupilRepository.findAllJoin());
-
     }
 
 

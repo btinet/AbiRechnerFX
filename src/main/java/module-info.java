@@ -9,11 +9,12 @@ module edu.tk.fxcontrollertest {
     requires io;
     requires kernel;
     requires layout;
-    requires aquafx;
+    requires com.dlsc.workbenchfx.core;
 
     opens edu.tk.examcalc to javafx.fxml;
     opens edu.tk.examcalc.entity to javafx.base;
     opens edu.tk.examcalc.component to javafx.base;
+    exports edu.tk.examcalc.form;
     exports edu.tk.examcalc;
     exports edu.tk.examcalc.controller;
     exports edu.tk.examcalc.entity;

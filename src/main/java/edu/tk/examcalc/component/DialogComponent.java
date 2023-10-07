@@ -9,8 +9,8 @@ import javafx.stage.Stage;
 
 public class DialogComponent extends Dialog<ButtonType> {
 
-    ButtonType cancelButtonType = new ButtonType("_Abbrechen", ButtonType.CANCEL.getButtonData());
-    ButtonType submitButtonType = new ButtonType("_Speichern", ButtonType.OK.getButtonData());
+    private ButtonType cancelButtonType = new ButtonType("_Abbrechen", ButtonType.CANCEL.getButtonData());
+    private ButtonType submitButtonType = new ButtonType("_Speichern", ButtonType.OK.getButtonData());
 
     public DialogComponent(String title) {
         Stage stage = (Stage) getDialogPane().getScene().getWindow();

@@ -13,7 +13,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
@@ -37,8 +36,7 @@ public class PupilForm extends Form {
     private final TextField examDate = new TextField();
     private boolean hasExamDate = false;
     private final SearchableComboBox<Tutor> tutor = new SearchableComboBox<>();
-    private final Label errorLabel = new Label();
-    private final DialogComponent dialog;
+        private final DialogComponent dialog;
 
     public PupilForm(DialogComponent dialog) {
 
@@ -51,8 +49,6 @@ public class PupilForm extends Form {
         setVgap(15);
         setHgap(15);
         setGridLinesVisible(false);
-
-        errorLabel.setTextFill(Color.RED);
 
         firstname.textProperty().addListener((arg0, oldValue, newValue) -> {
             hasFirstname = !firstname.getText().isEmpty();

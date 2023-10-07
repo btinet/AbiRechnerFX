@@ -1,5 +1,7 @@
 package edu.tk.examcalc;
 
+import com.dlsc.workbenchfx.Workbench;
+import com.dlsc.workbenchfx.model.WorkbenchModule;
 import edu.tk.db.global.Database;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -7,7 +9,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import com.aquafx_project.AquaFx;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -30,8 +31,6 @@ public class MainApplication extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("index.fxml"));
 
         Scene scene = new Scene(fxmlLoader.load(), 1280, 720);
-        //scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles/caspian.css")).toExternalForm());
-        //AquaFx.style();
         stage.setMinWidth(1280);
         stage.setMinHeight(720);
         stage.setTitle("AbiRechner - Treptow-Kolleg Berlin");

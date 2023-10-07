@@ -185,7 +185,7 @@ public class PDFExportService {
                 table.addCell(new Cell(1,3).add(new Paragraph("Endnote")));
                 assert grade != null;
                 table.addCell(grade.toString());
-                table.addCell(new Cell(1,4).add(new Paragraph("fehlende Punkte bis zur besseren Note: " + (nextKey-sumPoints)).setFont(italic)));
+                table.addCell(new Cell(1,4));
 
 
                 document.add(title);
