@@ -675,7 +675,7 @@ public class QueryBuilder<T> {
 
             for (Field field : this.entity.getClass().getDeclaredFields()) {
                 if(field.getAnnotation(ORM.class) != null) {
-                    System.out.println(field.getAnnotation(ORM.class).label());
+                    System.out.println(field.getAnnotation(ORM.class).column());
                 }
                 if(field.getAnnotation(ManyToOne.class) != null) {
                     String entity = field.getAnnotation(ManyToOne.class).entity().getSimpleName();
@@ -683,12 +683,16 @@ public class QueryBuilder<T> {
                     String target = field.getName();
                     System.out.printf("ManyToOne aus Tabelle '%s' mit Spalte '%s' nach Attribut '%s'.%n",generateSnakeTailString(entity),origin,target);
                 }
+                // TODO: künftig nicht mehr nach Modifier unterscheiden!
                 if (field.getModifiers() == Modifier.PROTECTED || field.getModifiers() == Modifier.PUBLIC && this.publicSelect) {
                     String fieldName = "";
                     fieldName = field.getName();
 
 
                     field.setAccessible(true);
+                    // TODO: künftig mit switch case lösen:
+                    System.out.printf("Datentyp ist %s!%n",field.getType().getSimpleName());
+
                     if(field.getType().getSimpleName().equals("int")){
                         field.set(object, result.getInt(fieldName));
                     }

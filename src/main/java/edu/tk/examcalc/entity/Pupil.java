@@ -1,8 +1,6 @@
 package edu.tk.examcalc.entity;
 
-import edu.tk.db.model.Condition;
-import edu.tk.db.model.Entity;
-import edu.tk.db.model.ORM;
+import edu.tk.db.model.*;
 import edu.tk.examcalc.repository.ExamRepository;
 import edu.tk.examcalc.repository.TutorRepository;
 
@@ -10,22 +8,24 @@ import java.util.ArrayList;
 
 public class Pupil extends Entity {
 
+    @Join(entity=Tutor.class, column = "firstname", on = "tutorId")
     public String tutorFirstname;
+    @Join(entity=Tutor.class, column = "lastname", on = "tutorId")
     public String tutorLastname;
 
-    @ORM(label="id")
+    @ORM(column ="id")
     protected int id;
-    @ORM(label="tutorId")
+    @ManyToOne(entity=Tutor.class, origin = "id")
     protected Integer tutorId;
-    @ORM(label="firstname")
+    @ORM(column ="firstname")
     protected String firstname;
-    @ORM(label="lastname")
+    @ORM(column ="lastname")
     protected String lastname;
-    @ORM(label="birthDate")
+    @ORM(column ="birthDate")
     protected String birthDate;
-    @ORM(label="examDate")
+    @ORM(column ="examDate")
     protected String examDate;
-    @ORM(label="coursePoints")
+    @ORM(column ="coursePoints")
     protected Integer coursePoints;
     private final TutorRepository tutorRepository = new TutorRepository();
 

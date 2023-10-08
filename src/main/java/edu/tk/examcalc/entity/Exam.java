@@ -13,17 +13,16 @@ public class Exam extends Entity {
     @Join(entity=SchoolSubject.class, column = "label", on = "schoolSubjectId")
     public String schoolSubject;
 
-    @ORM(label="id")
+    @ORM(column ="id")
     protected int id;
     @ManyToOne(entity=Pupil.class, origin = "id")
     protected Integer pupilId;
     @ManyToOne(entity=SchoolSubject.class, origin = "id")
     protected Integer schoolSubjectId;
-    @ORM(label="examNumber")
+    @ORM(column ="examNumber")
     protected Integer examNumber;
-    @ORM(label="points")
+    @ORM(column ="points")
     protected Integer points;
-
     public int getId() {
         return id;
     }
