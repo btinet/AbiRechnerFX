@@ -10,7 +10,7 @@ import edu.tk.examcalc.repository.SchoolSubjectRepository;
 
 public class Exam extends Entity {
 
-    @Join(entity=SchoolSubject.class, origin = "label")
+    @Join(entity=SchoolSubject.class, column = "label", on = "schoolSubjectId")
     public String schoolSubject;
 
     @ORM(label="id")

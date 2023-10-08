@@ -6,6 +6,9 @@ import java.lang.annotation.RetentionPolicy;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Join {
     Class<? extends Entity> entity();
-    String origin();
+
+    String column();
+
+    String on();
 }
 

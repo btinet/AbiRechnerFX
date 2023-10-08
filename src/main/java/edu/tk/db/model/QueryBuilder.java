@@ -677,6 +677,12 @@ public class QueryBuilder<T> {
                 if(field.getAnnotation(ORM.class) != null) {
                     System.out.println(field.getAnnotation(ORM.class).label());
                 }
+                if(field.getAnnotation(ManyToOne.class) != null) {
+                    String entity = field.getAnnotation(ManyToOne.class).entity().getSimpleName();
+                    String origin = field.getAnnotation(ManyToOne.class).origin();
+                    String target = field.getName();
+                    System.out.printf("ManyToOne aus Tabelle '%s' mit Spalte '%s' nach Attribut '%s'.%n",generateSnakeTailString(entity),origin,target);
+                }
                 if (field.getModifiers() == Modifier.PROTECTED || field.getModifiers() == Modifier.PUBLIC && this.publicSelect) {
                     String fieldName = "";
                     fieldName = field.getName();
