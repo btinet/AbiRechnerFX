@@ -12,6 +12,8 @@ import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -76,17 +78,22 @@ public class Kernel implements Initializable {
         topBox.getChildren().add(pageLabel);
         topBox.setStyle("-fx-background-color: linear-gradient(from 65% 65% to 90% 90%, #F2F2F2, #309CCB);");
 
-        MenuItem menuItem1 = new MenuItem("Punkte ermitteln");
-        menuItem1.setOnAction(t -> switchToController(new CalculateController()));
-        MenuItem menuItem2 = new MenuItem("Lernende verwalten");
-        menuItem2.setOnAction(t -> switchToController(new PupilController()));
+        //MenuItem menuItem1 = new MenuItem("Punkte ermitteln");
+        //menuItem1.setOnAction(t -> switchToController(new CalculateController()));
+        //MenuItem menuItem2 = new MenuItem("Lernende verwalten");
+        //menuItem2.setOnAction(t -> switchToController(new PupilController()));
         MenuItem menuItem3 = new MenuItem("Abmelden");
         menuItem3.setOnAction(t -> switchToController(new AuthenticationController()));
         menuItem3.setOnAction(t -> Controller.login.setValue(false));
 
-        MenuItem menuItem4 = new MenuItem("Option 4");
-        MenuItem menuItem5 = new MenuItem("Option 5");
-        MenuItem menuItem6 = new MenuItem("Option 6");
+        MenuItem menuItem4 = new MenuItem("Beenden");
+        menuItem4.setOnAction(t -> {
+            Platform.exit();
+            System.exit(0);
+        });
+
+        MenuItem menuItem5 = new MenuItem("Hilfe");
+        MenuItem menuItem6 = new MenuItem("Über...");
 
         MenuItem adminBoardItem = new MenuItem("Nutzer ändern...");
 
@@ -94,8 +101,8 @@ public class Kernel implements Initializable {
         Menu menu1 = new Menu("Datei");
         Menu wizardMenu = new Menu("Assistenten");
         Menu menu2 = new Menu("?");
-        menu1.getItems().addAll(menuItem1,menuItem2,menuItem3);
-        menu2.getItems().addAll(menuItem4,menuItem5,menuItem6);
+        menu1.getItems().addAll(menuItem3,new SeparatorMenuItem(),menuItem4);
+        menu2.getItems().addAll(menuItem5,new SeparatorMenuItem(),menuItem6);
         wizardMenu.getItems().add(adminBoardItem);
 
         Controller.login.addListener((observable, oldValue, newValue) -> {

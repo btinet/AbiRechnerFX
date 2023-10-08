@@ -9,6 +9,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.geometry.Side;
 import javafx.scene.Cursor;
 import javafx.scene.control.*;
@@ -44,6 +45,7 @@ public class AuthenticationController extends Controller {
 
         VBox centerBox = new VBox();
         centerBox.setSpacing(25);
+        centerBox.setFillWidth(true);
         centerBox.setPadding(new Insets(25));
 
         VBox detailBox = new VBox();
@@ -56,11 +58,12 @@ public class AuthenticationController extends Controller {
         scrollPane2.setFitToWidth(true);
         scrollPane2.setFitToHeight(true);
         detailBox.setStyle("-fx-background-color: FFFFFF;");
-        masterDetailPane.setMasterNode(scrollPane);
+
+        //masterDetailPane.setMasterNode(scrollPane);
         masterDetailPane.setDetailNode(scrollPane2);
         masterDetailPane.setDetailSide(Side.LEFT);
         masterDetailPane.setDividerPosition(.3);
-        loginTab.setContent(masterDetailPane);
+        loginTab.setContent(scrollPane);
     }
 
     private void login(ActionEvent e) {
