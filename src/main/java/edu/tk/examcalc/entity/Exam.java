@@ -1,5 +1,7 @@
 package edu.tk.examcalc.entity;
 
+import edu.tk.db.model.Join;
+import edu.tk.db.model.ManyToOne;
 import edu.tk.db.model.ORM;
 import edu.tk.db.model.Entity;
 import edu.tk.examcalc.repository.ExamRepository;
@@ -8,13 +10,18 @@ import edu.tk.examcalc.repository.SchoolSubjectRepository;
 
 public class Exam extends Entity {
 
+    @Join(entity=SchoolSubject.class, origin = "label")
     public String schoolSubject;
 
     @ORM(label="id")
     protected int id;
+    @ManyToOne(entity=Pupil.class, origin = "id")
     protected Integer pupilId;
+    @ManyToOne(entity=SchoolSubject.class, origin = "id")
     protected Integer schoolSubjectId;
+    @ORM(label="examNumber")
     protected Integer examNumber;
+    @ORM(label="points")
     protected Integer points;
 
     public int getId() {
