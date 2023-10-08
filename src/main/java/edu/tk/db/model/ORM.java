@@ -6,7 +6,6 @@ import java.lang.annotation.RetentionPolicy;
 
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ORM {
-    String column();
 
 }
 

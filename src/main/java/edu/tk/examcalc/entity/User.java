@@ -1,17 +1,26 @@
 package edu.tk.examcalc.entity;
 
 import edu.tk.db.model.Entity;
+import edu.tk.db.model.ManyToOne;
+import edu.tk.db.model.ORM;
 import edu.tk.examcalc.repository.UserRoleRepository;
 
 public class User extends Entity {
 
 
+    @ORM
     protected Integer id;
+    @ManyToOne(entity=UserRole.class, origin = "id")
     protected Integer userRoleId;
+    @ORM
     protected String username;
+    @ORM
     protected String password;
+    @ORM
     protected String email;
+    @ORM
     protected String firstname;
+    @ORM
     protected String lastname;
 
     private final UserRoleRepository roleRepository = new UserRoleRepository();

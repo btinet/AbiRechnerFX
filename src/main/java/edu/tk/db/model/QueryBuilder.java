@@ -9,10 +9,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.logging.Logger;
 
 public class QueryBuilder<T> {
@@ -141,7 +138,7 @@ public class QueryBuilder<T> {
         Field[] allFields = this.entity.getClass().getDeclaredFields();
         ArrayList<Field> fields = new ArrayList<>();
         for(Field field : allFields) {
-            if(field.getModifiers() == Modifier.PROTECTED) {
+            if(field.getAnnotation(ORM.class) != null || field.getAnnotation(ManyToOne.class) != null) {
                 fields.add(field);
             }
         }
@@ -674,45 +671,37 @@ public class QueryBuilder<T> {
             object = (T) this.entity.getClass().getConstructor().newInstance();
 
             for (Field field : this.entity.getClass().getDeclaredFields()) {
-                if(field.getAnnotation(ORM.class) != null) {
-                    System.out.println(field.getAnnotation(ORM.class).column());
-                }
+
                 if(field.getAnnotation(ManyToOne.class) != null) {
                     String entity = field.getAnnotation(ManyToOne.class).entity().getSimpleName();
                     String origin = field.getAnnotation(ManyToOne.class).origin();
                     String target = field.getName();
                     System.out.printf("ManyToOne aus Tabelle '%s' mit Spalte '%s' nach Attribut '%s'.%n",generateSnakeTailString(entity),origin,target);
                 }
-                // TODO: künftig nicht mehr nach Modifier unterscheiden!
-                if (field.getModifiers() == Modifier.PROTECTED || field.getModifiers() == Modifier.PUBLIC && this.publicSelect) {
-                    String fieldName = "";
-                    fieldName = field.getName();
 
-
+                if (field.getAnnotation(ORM.class) != null || field.getAnnotation(ManyToOne.class) != null ) {
+                    String fieldName = field.getName();
                     field.setAccessible(true);
-                    // TODO: künftig mit switch case lösen:
-                    System.out.printf("Datentyp ist %s!%n",field.getType().getSimpleName());
-
-                    if(field.getType().getSimpleName().equals("int")){
-                        field.set(object, result.getInt(fieldName));
-                    }
-                    if(field.getType().getSimpleName().equals("Integer")){
-                        field.set(object, result.getInt(fieldName));
-                    }
-                    if(field.getType().getSimpleName().equals("String")){
-                        field.set(object, result.getString(fieldName));
-                    }
-                    if(field.getType().getSimpleName().equals("Boolean")){
-                        field.set(object, (1 == result.getInt(fieldName)));
+                    switch (field.getType().getSimpleName()) {
+                        case "int":
+                        case "Integer":
+                            field.set(object, result.getInt(fieldName));
+                            break;
+                        case "String":
+                            field.set(object, result.getString(fieldName));
+                            break;
+                        case "boolean":
+                        case "Boolean":
+                            field.set(object, result.getBoolean(fieldName));
+                            break;
+                        default:
                     }
                     field.setAccessible(false);
-
                 }
+
             }
             list.add(object);
         }
-
-
         return list;
     }
 

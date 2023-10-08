@@ -13,19 +13,19 @@ public class Pupil extends Entity {
     @Join(entity=Tutor.class, column = "lastname", on = "tutorId")
     public String tutorLastname;
 
-    @ORM(column ="id")
+    @ORM
     protected int id;
     @ManyToOne(entity=Tutor.class, origin = "id")
     protected Integer tutorId;
-    @ORM(column ="firstname")
+    @ORM
     protected String firstname;
-    @ORM(column ="lastname")
+    @ORM
     protected String lastname;
-    @ORM(column ="birthDate")
+    @ORM
     protected String birthDate;
-    @ORM(column ="examDate")
+    @ORM
     protected String examDate;
-    @ORM(column ="coursePoints")
+    @ORM
     protected Integer coursePoints;
     private final TutorRepository tutorRepository = new TutorRepository();
 

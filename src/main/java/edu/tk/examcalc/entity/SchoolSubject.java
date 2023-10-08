@@ -1,10 +1,13 @@
 package edu.tk.examcalc.entity;
 
 import edu.tk.db.model.Entity;
+import edu.tk.db.model.ORM;
 
 public class SchoolSubject extends Entity {
 
+    @ORM
     protected int id;
+    @ORM
     protected String label;
 
     public String toString() {

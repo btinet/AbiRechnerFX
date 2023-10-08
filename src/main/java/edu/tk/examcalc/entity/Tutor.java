@@ -1,11 +1,15 @@
 package edu.tk.examcalc.entity;
 
 import edu.tk.db.model.Entity;
+import edu.tk.db.model.ORM;
 
 public class Tutor extends Entity {
 
+    @ORM
     protected int id;
+    @ORM
     protected String firstname;
+    @ORM
     protected String lastname;
 
     public String toString() {
