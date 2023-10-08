@@ -2,10 +2,8 @@ package edu.tk.db.model;
 
 
 import edu.tk.db.global.Database;
-import edu.tk.examcalc.MainApplication;
 import edu.tk.examcalc.controller.Kernel;
 import javafx.application.Platform;
-import javafx.scene.Cursor;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -676,6 +674,9 @@ public class QueryBuilder<T> {
             object = (T) this.entity.getClass().getConstructor().newInstance();
 
             for (Field field : this.entity.getClass().getDeclaredFields()) {
+                if(field.getAnnotation(ORM.class) != null) {
+                    System.out.println(field.getAnnotation(ORM.class).label());
+                }
                 if (field.getModifiers() == Modifier.PROTECTED || field.getModifiers() == Modifier.PUBLIC && this.publicSelect) {
                     String fieldName = "";
                     fieldName = field.getName();

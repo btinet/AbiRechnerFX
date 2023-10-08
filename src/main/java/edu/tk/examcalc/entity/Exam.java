@@ -1,13 +1,16 @@
 package edu.tk.examcalc.entity;
 
+import edu.tk.db.model.ORM;
 import edu.tk.db.model.Entity;
 import edu.tk.examcalc.repository.ExamRepository;
 import edu.tk.examcalc.repository.SchoolSubjectRepository;
+
 
 public class Exam extends Entity {
 
     public String schoolSubject;
 
+    @ORM(label="id")
     protected int id;
     protected Integer pupilId;
     protected Integer schoolSubjectId;
