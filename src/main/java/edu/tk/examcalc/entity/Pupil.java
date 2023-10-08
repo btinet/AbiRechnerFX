@@ -10,9 +10,7 @@ import java.util.ArrayList;
 
 public class Pupil extends Entity {
 
-    @ORM(label="tutorFirstname")
     public String tutorFirstname;
-    @ORM(label="tutorLastname")
     public String tutorLastname;
 
     @ORM(label="id")
