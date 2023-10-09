@@ -26,6 +26,7 @@ import javafx.stage.Window;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.logging.Logger;
@@ -164,10 +165,11 @@ public class PDFExportService {
                         double x = (double) zwischenSumme *3/4 -(exam.getPoints()*2);
 
                         if(x < 15 && sumPoints < 823) {
-                            table.addCell(String.valueOf((int) Math.round(x)));
+                            DecimalFormat df = new DecimalFormat("#.#");
+                            table.addCell(String.valueOf((int)x));
                             table.addCell(String.valueOf(zwischenSumme));
                             table.addCell(String.valueOf(nextKey));
-                            table.addCell(String.valueOf(grade - .1));
+                            table.addCell(String.valueOf(df.format(grade - .1)));
                         } else {
                             table.addCell(new Cell(1,4));
                         }
