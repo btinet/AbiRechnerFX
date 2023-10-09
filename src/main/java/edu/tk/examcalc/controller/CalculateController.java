@@ -34,7 +34,7 @@ public class CalculateController extends Controller {
     public IconButton refreshButton;
     public IconButton pupilCrudButton;
 
-    private final Pupil pupil;
+    private Pupil pupil;
     private ExamTableView tableView;
 
     private final ExamRepository examRepository = new ExamRepository();
@@ -50,17 +50,20 @@ public class CalculateController extends Controller {
 
     public CalculateController() {
         super("calculate-index.fxml");
-
-        this.pupil = (Pupil) Session.copy("pupil");
-        if(this.pupil != null) {
-            this.pupilExams = examRepository.findAllJoinSubject(this.pupil.getId());
-            this.tableView = new ExamTableView(pupilExams);
-        }
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        this.pupil = (Pupil) Session.copy("pupil");
+        if(this.pupil != null) {
+            this.pupilExams = pupil.getExams();
+            this.tableView = new ExamTableView(this.pupilExams);
+        }
+
         setPageTitle("Prüfungen für " + this.pupil);
+
+
 
         DialogComponent dialog = new DialogComponent("Prüfungen verwalten");
         this.examForm = new ExamForm(dialog);

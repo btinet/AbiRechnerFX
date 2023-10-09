@@ -53,8 +53,6 @@ public class QueryBuilder<T> {
         this.naturalCase = naturalCase;
         this.ucFirst = ucFirst;
         this.alias = alias;
-        Logger.getLogger(getClass().getName()).info("Neue SQL-Abfrage generieren:");
-        Logger.getLogger(getClass().getName()).info("============================");
     }
 
     private String generateSnakeTailString(String value)
@@ -168,9 +166,9 @@ public class QueryBuilder<T> {
 
                 if(this.joins.indexOf(joinedEntity) == -1) {
                     if(field.getAnnotation(Join.class) != null ) {
-                        this.innerJoin(joinedEntity,joinedEntity+".id",entity+"."+currentId);
+                        this.leftJoin(joinedEntity,joinedEntity+".id",entity+"."+currentId);
                     } else {
-                        this.innerJoin(joinedEntity,joinedEntity+"." + currentId,entity+".id");
+                        this.leftJoin(joinedEntity,joinedEntity+"." + currentId,entity+".id");
                     }
                 }
 
@@ -251,6 +249,23 @@ public class QueryBuilder<T> {
         } else {
             this.query.append(this.generateSnakeTailString(this.entity.getClass().getSimpleName()));
         }
+        return this;
+    }
+
+    public QueryBuilder<T> leftJoin(String table,String key){
+        this.joins.append(" LEFT JOIN ").append(table).append(" USING (").append(key).append(")");
+        return this;
+    }
+
+    public QueryBuilder<T> leftJoin(String table,String left, String right){
+        this.joins.append(" LEFT JOIN ")
+                .append(table)
+                .append(" ON (")
+                .append(left)
+                .append(" = ")
+                .append(right)
+                .append(")")
+        ;
         return this;
     }
 
@@ -360,13 +375,11 @@ public class QueryBuilder<T> {
 
     public QueryBuilder<T> setParameter(Integer parameter, int value){
         this.integerParameters.put(parameter, value);
-        Logger.getLogger(getClass().getName()).info(parameter + ". ? ist: " + value);
         return this;
     }
 
     public QueryBuilder<T> setParameter(Integer parameter, String value){
         this.stringParameters.put(parameter, value);
-        Logger.getLogger(getClass().getName()).info(parameter + ". ? ist: " + value);
         return this;
     }
 
@@ -406,18 +419,6 @@ public class QueryBuilder<T> {
                 }
             }
         }
-
-        Logger.getLogger(getClass().getName()).info("UPDATE Query: " + this.query);
-        Platform.runLater(() -> {
-            Kernel.activityStringProperty.setValue(this.query.toString());
-            try {
-                Thread.sleep(50);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-            
-        });
-
         return this;
     }
 
@@ -463,17 +464,6 @@ public class QueryBuilder<T> {
                 }
             }
         }
-
-        Logger.getLogger(getClass().getName()).info("DELETE Query: " + this.query);
-        Platform.runLater(() -> {
-            Kernel.activityStringProperty.setValue(this.query.toString());
-            try {
-                Thread.sleep(50);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-            
-        });
         return this;
     }
 
@@ -510,17 +500,6 @@ public class QueryBuilder<T> {
                 }
             }
         }
-
-        Logger.getLogger(getClass().getName()).info("INSERT Query: " + this.query);
-        Platform.runLater(() -> {
-            Kernel.activityStringProperty.setValue(this.query.toString());
-            try {
-                Thread.sleep(50);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-            
-        });
         return this;
     }
 
@@ -583,15 +562,6 @@ public class QueryBuilder<T> {
             }
         }
         Logger.getLogger(getClass().getName()).info(String.valueOf(this.query));
-        Platform.runLater(() -> {
-            Kernel.activityStringProperty.setValue(this.query.toString());
-            try {
-                Thread.sleep(50);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-            
-        });
         return this;
     }
 

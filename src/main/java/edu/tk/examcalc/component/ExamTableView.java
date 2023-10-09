@@ -1,16 +1,9 @@
 package edu.tk.examcalc.component;
 
 import edu.tk.examcalc.entity.Exam;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
-import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 
 import java.util.ArrayList;
 
@@ -35,36 +28,6 @@ public class ExamTableView extends TableView<ExamTableData> {
                 .addColumn("Gesamtpunkte (neu)","summedExamPoints",150)
                 .addColumn("Endnote (neu)","newGrade",150)
         ;
-
-        this.setRowFactory(tv -> new TableRow<>() {
-            @Override
-            protected void updateItem(ExamTableData item, boolean empty) {
-                super.updateItem(item, empty);
-                if (item == null || item.getNeededPoints() == 0) {
-                    setStyle("-fx-border-color: none;");
-                }
-                else if (item.getNeededPoints() > 0) {
-
-                }
-                else if (item.getNeededPoints() < 0) {
-                    setStyle("-fx-border-color: none;");
-                }
-                else {
-                    setStyle("-fx-border-color: none;");
-                }
-                if(getTableView().getSelectionModel().getSelectedItems().contains(item))
-                    setTextFill(Color.WHITE);
-                else
-                    setTextFill(Color.BLACK);
-
-            }
-        });
-
-
-
-
-
-
 
     }
 

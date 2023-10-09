@@ -12,7 +12,6 @@ import java.util.Collections;
 public class ExamTableData {
 
     private final Exam exam;
-
     private final IntegerProperty examNumber = new SimpleIntegerProperty();
     private final StringProperty label = new SimpleStringProperty();
     private final IntegerProperty points = new SimpleIntegerProperty();
