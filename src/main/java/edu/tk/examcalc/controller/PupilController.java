@@ -1,13 +1,7 @@
 package edu.tk.examcalc.controller;
 
-import com.itextpdf.kernel.colors.DeviceRgb;
-import com.itextpdf.layout.Document;
-import com.itextpdf.layout.element.Table;
-import com.itextpdf.layout.element.Cell;
 import edu.tk.db.global.Session;
-import edu.tk.examcalc.MainApplication;
 import edu.tk.examcalc.component.*;
-import edu.tk.examcalc.entity.Exam;
 import edu.tk.examcalc.entity.Pupil;
 import edu.tk.examcalc.form.PupilForm;
 import edu.tk.examcalc.repository.PupilRepository;
@@ -21,21 +15,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
-import javafx.stage.Window;
 
-import com.itextpdf.io.font.constants.StandardFonts;
-import com.itextpdf.kernel.font.PdfFont;
-import com.itextpdf.kernel.font.PdfFontFactory;
-import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfWriter;
-import com.itextpdf.layout.element.Paragraph;
-import com.itextpdf.layout.property.TextAlignment;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
@@ -60,7 +40,7 @@ public class PupilController extends Controller {
     public PupilController() {
         super("pupil-index.fxml");
         PupilRepository pupilRepository = new PupilRepository();
-        pupilTableView = new PupilTableView(pupilRepository.findAllOrdered());
+        pupilTableView = new PupilTableView(pupilRepository.findAllGroupedByPupil());
     }
 
 

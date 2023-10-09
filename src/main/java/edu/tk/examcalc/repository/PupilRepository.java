@@ -10,13 +10,14 @@ import java.util.HashMap;
 
 public class PupilRepository extends Repository<Pupil> {
 
-    public ArrayList<Pupil> findAllOrdered(){
+    public ArrayList<Pupil> findAllGroupedByPupil(){
         try {
             HashMap<String,String> order = new HashMap<>();
             order.put("examDate","DESC");
 
             return this.createQueryBuilder()
                     .selectOrm()
+                    .groupBy("id")
                     .orderBy(order)
                     .getQuery()
                     .getResult()

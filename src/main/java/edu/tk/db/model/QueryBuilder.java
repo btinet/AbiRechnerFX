@@ -138,7 +138,7 @@ public class QueryBuilder<T> {
         Field[] allFields = this.entity.getClass().getDeclaredFields();
         ArrayList<Field> fields = new ArrayList<>();
         for(Field field : allFields) {
-            if(field.getAnnotation(ORM.class) != null || field.getAnnotation(ManyToOne.class) != null || field.getAnnotation(Join.class) != null) {
+            if(field.getAnnotation(ORM.class) != null || field.getAnnotation(ManyToOne.class) != null || field.getAnnotation(Join.class) != null || field.getAnnotation(InverseJoin.class) != null) {
                 fields.add(field);
             }
         }
@@ -148,14 +148,30 @@ public class QueryBuilder<T> {
         String entity = generateSnakeTailString(this.entity.getClass().getSimpleName());
         for (Field field : fields) {
 
-            if(field.getAnnotation(Join.class) != null) {
+            if(field.getAnnotation(Join.class) != null || field.getAnnotation(InverseJoin.class) != null) {
 
-                String currentId = generateSnakeTailString(field.getAnnotation(Join.class).on());
-                String joinedEntity = generateSnakeTailString(field.getAnnotation(Join.class).entity().getSimpleName());
-                String joinedColumn = field.getAnnotation(Join.class).column();
+                String currentId;
+                String joinedEntity;
+                String joinedColumn;
+
+                if(field.getAnnotation(Join.class) != null ) {
+                    currentId = generateSnakeTailString(field.getAnnotation(Join.class).on());
+                    joinedEntity = generateSnakeTailString(field.getAnnotation(Join.class).entity().getSimpleName());
+                    joinedColumn = field.getAnnotation(Join.class).column();
+                } else {
+                    currentId = generateSnakeTailString(field.getAnnotation(InverseJoin.class).on());
+                    joinedEntity = generateSnakeTailString(field.getAnnotation(InverseJoin.class).entity().getSimpleName());
+                    joinedColumn = field.getAnnotation(InverseJoin.class).column();
+                }
+
+
 
                 if(this.joins.indexOf(joinedEntity) == -1) {
-                    this.innerJoin(joinedEntity,joinedEntity+".id",entity+"."+currentId);
+                    if(field.getAnnotation(Join.class) != null ) {
+                        this.innerJoin(joinedEntity,joinedEntity+".id",entity+"."+currentId);
+                    } else {
+                        this.innerJoin(joinedEntity,joinedEntity+"." + currentId,entity+".id");
+                    }
                 }
 
 
@@ -710,10 +726,9 @@ public class QueryBuilder<T> {
                     String entity = field.getAnnotation(ManyToOne.class).entity().getSimpleName();
                     String origin = field.getAnnotation(ManyToOne.class).origin();
                     String target = field.getName();
-                    System.out.printf("ManyToOne aus Tabelle '%s' mit Spalte '%s' nach Attribut '%s'.%n",generateSnakeTailString(entity),origin,target);
                 }
 
-                if (field.getAnnotation(ORM.class) != null || field.getAnnotation(ManyToOne.class) != null || field.getAnnotation(Join.class) != null) {
+                if (field.getAnnotation(ORM.class) != null || field.getAnnotation(ManyToOne.class) != null || field.getAnnotation(Join.class) != null || field.getAnnotation(InverseJoin.class) != null) {
                     String fieldName = field.getName();
                     field.setAccessible(true);
                     switch (field.getType().getSimpleName()) {
