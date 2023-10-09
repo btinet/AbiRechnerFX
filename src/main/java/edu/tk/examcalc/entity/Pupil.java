@@ -12,7 +12,7 @@ public class Pupil extends Entity {
     public String tutorFirstname;
     @Join(entity=Tutor.class, column = "lastname", on = "tutorId")
     public String tutorLastname;
-    @Join(entity = Exam.class, column = "SUM(points * 4)", on = "examId")
+    @InverseJoin(entity = Exam.class, column = "SUM(points * 4)", on = "pupilId")
     public Integer summedExamPoints;
 
     @ORM
