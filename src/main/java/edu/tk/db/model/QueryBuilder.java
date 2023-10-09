@@ -138,29 +138,63 @@ public class QueryBuilder<T> {
         Field[] allFields = this.entity.getClass().getDeclaredFields();
         ArrayList<Field> fields = new ArrayList<>();
         for(Field field : allFields) {
-            if(field.getAnnotation(ORM.class) != null || field.getAnnotation(ManyToOne.class) != null) {
+            if(field.getAnnotation(ORM.class) != null || field.getAnnotation(ManyToOne.class) != null || field.getAnnotation(Join.class) != null) {
                 fields.add(field);
             }
         }
 
         StringBuilder columnBuilder = new StringBuilder();
         int i = 1;
+        String entity = generateSnakeTailString(this.entity.getClass().getSimpleName());
         for (Field field : fields) {
-            if(this.naturalCase){
-                columnBuilder.append(field.getName());
-            } else {
-                if(this.alias != null) {
-                    columnBuilder.append(alias).append(".");
+
+            if(field.getAnnotation(Join.class) != null) {
+
+                String currentId = generateSnakeTailString(field.getAnnotation(Join.class).on());
+                String joinedEntity = generateSnakeTailString(field.getAnnotation(Join.class).entity().getSimpleName());
+                String joinedColumn = field.getAnnotation(Join.class).column();
+
+                if(this.joins.indexOf(joinedEntity) == -1) {
+                    this.innerJoin(joinedEntity,joinedEntity+".id",entity+"."+currentId);
                 }
 
-                columnBuilder.append(this.generateSnakeTailString(field.getName()));
+
+
+
+                if(joinedColumn.contains("SUM(")) {
+                    columnBuilder.append(joinedColumn);
+                } else {
+                    columnBuilder.append(joinedEntity).append(".");
+                    columnBuilder.append(this.generateSnakeTailString(joinedColumn));
+                }
 
                 columnBuilder
                         .append(" AS ")
                         .append(field.getName())
                 ;
+
+            } else {
+                if(this.naturalCase){
+                    columnBuilder.append(field.getName());
+                } else {
+                    if(this.alias != null) {
+                        columnBuilder.append(alias).append(".");
+                    }
+
+
+
+                    columnBuilder.append(entity).append(".");
+                    columnBuilder.append(this.generateSnakeTailString(field.getName()));
+
+                    columnBuilder
+                            .append(" AS ")
+                            .append(field.getName())
+                    ;
+                }
             }
-            ;
+
+
+
             if(i < fields.size()) {
                 columnBuilder.append(", ");
             } else {
@@ -679,7 +713,7 @@ public class QueryBuilder<T> {
                     System.out.printf("ManyToOne aus Tabelle '%s' mit Spalte '%s' nach Attribut '%s'.%n",generateSnakeTailString(entity),origin,target);
                 }
 
-                if (field.getAnnotation(ORM.class) != null || field.getAnnotation(ManyToOne.class) != null ) {
+                if (field.getAnnotation(ORM.class) != null || field.getAnnotation(ManyToOne.class) != null || field.getAnnotation(Join.class) != null) {
                     String fieldName = field.getName();
                     field.setAccessible(true);
                     switch (field.getType().getSimpleName()) {

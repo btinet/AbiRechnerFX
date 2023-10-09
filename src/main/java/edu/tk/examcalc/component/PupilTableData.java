@@ -26,7 +26,6 @@ public class PupilTableData {
         if(pupil.tutorLastname != null || pupil.tutorFirstname != null) {
             tutorProperty.setValue(pupil.tutorFirstname + " " + pupil.tutorLastname);
         }
-
     }
 
     public Pupil getPupil() {

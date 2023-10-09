@@ -14,12 +14,10 @@ public class ExamRepository extends Repository<Exam> {
         try {
             HashMap<String,String> order = new HashMap<>();
             order.put("examNumber","ASC");
-            setAlias("e");
+            // TODO: Summierte Prüfungspunkte selektieren?
             return this.createQueryBuilder()
                     .selectOrm()
-                    .selectPublic("school_subject.label AS schoolSubject")
-                    .innerJoin("school_subject","e.school_subject_id","school_subject.id")
-                    .orWhere("e.pupil_id = ?")
+                    .andWhere("exam.pupil_id = ?")
                     .setParameter(1,id)
                     .orderBy(order)
                     .getQuery()

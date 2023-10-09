@@ -33,7 +33,7 @@ public class ExamTableData {
         int prevKey = 0;
         int currentKey = 0;
         int nextKey = 0;
-        int sumPoints = exam.getSummedExamPoints() + pupil.getCoursePoints();
+        int sumPoints = pupil.summedExamPoints + pupil.getCoursePoints();
 
         ArrayList<Integer> grades = new ArrayList<>(Grades.GRADE.keySet());
         Collections.sort(grades);

@@ -10,16 +10,13 @@ import java.util.HashMap;
 
 public class PupilRepository extends Repository<Pupil> {
 
-    public ArrayList<Pupil> findAllJoin(){
+    public ArrayList<Pupil> findAllOrdered(){
         try {
             HashMap<String,String> order = new HashMap<>();
             order.put("examDate","DESC");
-            setAlias("p");
 
             return this.createQueryBuilder()
                     .selectOrm()
-                    .selectPublic("tutor.firstname AS tutorFirstname, tutor.lastname AS tutorLastname")
-                    .innerJoin("tutor","p.tutor_id","tutor.id")
                     .orderBy(order)
                     .getQuery()
                     .getResult()

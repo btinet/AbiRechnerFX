@@ -60,7 +60,7 @@ public class PupilController extends Controller {
     public PupilController() {
         super("pupil-index.fxml");
         PupilRepository pupilRepository = new PupilRepository();
-        pupilTableView = new PupilTableView(pupilRepository.findAllJoin());
+        pupilTableView = new PupilTableView(pupilRepository.findAllOrdered());
     }
 
 
