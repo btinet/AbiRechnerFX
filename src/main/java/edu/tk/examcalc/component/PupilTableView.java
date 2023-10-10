@@ -3,6 +3,7 @@ package edu.tk.examcalc.component;
 import edu.tk.examcalc.entity.Pupil;
 import javafx.collections.FXCollections;
 import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -56,9 +57,11 @@ public class PupilTableView extends FilteredTableView<PupilTableData> {
     public PupilTableView render() {
         getColumns().addAll(tableColumns);
         FilteredList<PupilTableData> filteredList = new FilteredList<>(FXCollections.observableArrayList(pupilList));
+        SortedList<PupilTableData> sortedList = new SortedList<>(filteredList);
+        sortedList.comparatorProperty().bind(this.comparatorProperty());
         //FilteredTableView.configureForFiltering(this,filteredList);
         filteredList.predicateProperty().bind(this.predicateProperty());
-        setItems(filteredList);
+        setItems(sortedList);
         //TableFilter<PupilTableData> filter = new TableFilter<>(this);
         return this;
     }
