@@ -2,6 +2,7 @@ package edu.tk.db.global;
 
 import edu.tk.examcalc.MainApplication;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -22,7 +23,11 @@ public class Database {
         if(null == connection){
             try {
                 Properties properties = new Properties();
-                properties.load(Objects.requireNonNull(MainApplication.class.getResource("/config/database.properties")).openStream());
+                FileInputStream file = new FileInputStream("config/database.properties");
+
+                //load all the properties from this file
+                properties.load(file);
+                //properties.load(Objects.requireNonNull(MainApplication.class.getResource("/config/database.properties")).openStream());
                 Class.forName(properties.getProperty(DB_DRIVER_CLASS));
                 connection = DriverManager.getConnection(properties.getProperty(DB_URL), properties.getProperty(DB_USERNAME) , properties.getProperty(DB_PASSWORD) );
                 connection.setNetworkTimeout(Executors.newFixedThreadPool(16),1000);
