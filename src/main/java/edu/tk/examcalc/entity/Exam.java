@@ -7,7 +7,6 @@ import edu.tk.db.model.Entity;
 import edu.tk.examcalc.repository.ExamRepository;
 import edu.tk.examcalc.repository.SchoolSubjectRepository;
 
-
 public class Exam extends Entity {
 
     @Join(entity=SchoolSubject.class, column = "label", on = "schoolSubjectId")
