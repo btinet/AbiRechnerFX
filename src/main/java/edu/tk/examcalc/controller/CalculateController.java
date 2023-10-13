@@ -8,6 +8,7 @@ import edu.tk.examcalc.entity.Exam;
 import edu.tk.examcalc.entity.Pupil;
 import edu.tk.examcalc.form.ExamForm;
 import edu.tk.examcalc.form.Form;
+import edu.tk.examcalc.form.SingleExamForm;
 import edu.tk.examcalc.repository.ExamRepository;
 import edu.tk.examcalc.service.PDFExportService;
 import javafx.beans.value.ChangeListener;
@@ -39,6 +40,7 @@ public class CalculateController extends Controller {
 
     private final ExamRepository examRepository = new ExamRepository();
     private ExamForm examForm;
+    private SingleExamForm editForm;
     private ArrayList<Exam> pupilExams;
     public Tab resultTab;
     public TabPane tabPane;
@@ -63,10 +65,10 @@ public class CalculateController extends Controller {
 
         setPageTitle("Prüfungen für " + this.pupil);
 
-
-
         DialogComponent dialog = new DialogComponent("Prüfungen verwalten");
+        DialogComponent dialog2 = new DialogComponent("Prüfungen verwalten");
         this.examForm = new ExamForm(dialog);
+        this.editForm = new SingleExamForm(dialog2);
 
         newButton.setIcon("win10-create-new");
         editButton.setIcon("win10-pencil");
@@ -75,6 +77,8 @@ public class CalculateController extends Controller {
         pupilCrudButton.setIcon("win10-gender-neutral-user");
 
         newButton.setOnAction(e -> examForm.showAndWait(this));
+        editButton.setOnAction(e -> editForm.showAndWait(this));
+
         refreshButton.setOnAction(e -> switchToController(content,this));
         exportButton.setOnAction(PDFExportService::new);
 

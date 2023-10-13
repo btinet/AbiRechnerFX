@@ -10,6 +10,7 @@ module edu.tk.fxcontrollertest {
     requires kernel;
     requires layout;
     requires com.dlsc.workbenchfx.core;
+    requires com.dlsc.formsfx;
 
     opens edu.tk.examcalc to javafx.fxml;
     opens edu.tk.examcalc.entity to javafx.base;

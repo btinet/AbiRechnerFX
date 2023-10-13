@@ -2,6 +2,7 @@ package edu.tk.examcalc.form;
 
 import edu.tk.db.global.Session;
 import edu.tk.db.model.EntityManager;
+import edu.tk.db.model.ResultSorter;
 import edu.tk.examcalc.component.DialogComponent;
 import edu.tk.examcalc.controller.CalculateController;
 import edu.tk.examcalc.controller.PupilController;
@@ -45,7 +46,7 @@ public class ExamForm extends Form {
         setGridLinesVisible(false);
 
         SchoolSubjectRepository schoolSubjectRepository = new SchoolSubjectRepository();
-        ArrayList<SchoolSubject> schoolSubjects = schoolSubjectRepository.findAll();
+        ArrayList<SchoolSubject> schoolSubjects = schoolSubjectRepository.findAll(new ResultSorter("label","ASC").getMap());
 
         int row = 0;
         Text obliText = new Text("Pflichtangaben");
@@ -89,7 +90,7 @@ public class ExamForm extends Form {
                 }
                 validateForm();
             });
-            for (int k = 1; k <= 15; k++) {
+            for (int k = 0; k <= 15; k++) {
                 pointsComboBox.getItems().add(k);
             }
 
