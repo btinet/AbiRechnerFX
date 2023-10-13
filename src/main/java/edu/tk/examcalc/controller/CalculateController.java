@@ -7,16 +7,19 @@ import edu.tk.examcalc.component.IconButton;
 import edu.tk.examcalc.entity.Exam;
 import edu.tk.examcalc.entity.Pupil;
 import edu.tk.examcalc.form.ExamForm;
-import edu.tk.examcalc.form.Form;
 import edu.tk.examcalc.form.SingleExamForm;
 import edu.tk.examcalc.repository.ExamRepository;
 import edu.tk.examcalc.service.PDFExportService;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 
 import java.net.URL;
@@ -50,6 +53,8 @@ public class CalculateController extends Controller {
     public TextField grade;
     public BorderPane centerPane;
 
+    public CalculateController controller = this;
+
     public CalculateController() {
         super("calculate-index.fxml");
     }
@@ -58,10 +63,11 @@ public class CalculateController extends Controller {
     public void initialize(URL location, ResourceBundle resources) {
 
         this.pupil = (Pupil) Session.copy("pupil");
-        if(this.pupil != null) {
-            this.pupilExams = pupil.getExams();
-            this.tableView = new ExamTableView(this.pupilExams);
-        }
+        assert pupil != null;
+        this.pupilExams = pupil.getExams();
+        this.tableView = new ExamTableView(this.pupilExams);
+        System.out.println("geladen!");
+
 
         setPageTitle("Prüfungen für " + this.pupil);
 
@@ -85,6 +91,25 @@ public class CalculateController extends Controller {
         if(this.pupilExams.size() == 5) {
             newButton.setDisable(true);
         }
+
+        tableView.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+                    Node node = ((Node) event.getTarget()).getParent();
+                    TableRow row;
+                    if (node instanceof TableRow) {
+                        row = (TableRow) node;
+                    } else {
+                        // clicking on text part
+                        row = (TableRow) node.getParent();
+                    }
+                    if(row.getItem() != null) {
+                        editForm.showAndWait(controller);
+                    }
+                }
+            }
+        });
 
         tableView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
             @Override
@@ -117,6 +142,7 @@ public class CalculateController extends Controller {
             this.grade.setText("Prüfung fehlt!");
         }
 
+        tableView.refresh();
         centerPane.setCenter(this.tableView.render());
     }
 }

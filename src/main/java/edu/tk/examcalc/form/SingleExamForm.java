@@ -1,24 +1,22 @@
 package edu.tk.examcalc.form;
 
-import com.dlsc.formsfx.model.structure.Field;
-import com.dlsc.formsfx.model.structure.Group;
-import com.dlsc.formsfx.view.renderer.FormRenderer;
 import edu.tk.db.global.Session;
+import edu.tk.db.model.EntityManager;
 import edu.tk.db.model.ResultSorter;
 import edu.tk.examcalc.component.DialogComponent;
 import edu.tk.examcalc.controller.CalculateController;
 import edu.tk.examcalc.entity.Exam;
-import edu.tk.examcalc.entity.Pupil;
 import edu.tk.examcalc.entity.SchoolSubject;
+import edu.tk.examcalc.repository.PupilRepository;
 import edu.tk.examcalc.repository.SchoolSubjectRepository;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import com.dlsc.formsfx.model.structure.Form;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import org.controlsfx.control.PropertySheet;
 import org.controlsfx.control.SearchableComboBox;
 
 import java.util.ArrayList;
@@ -29,12 +27,13 @@ public class SingleExamForm extends edu.tk.examcalc.form.Form {
     VBox vBox = new VBox();
     SearchableComboBox<SchoolSubject> subjectsComboBox = new SearchableComboBox<>();
     SearchableComboBox<Integer> gradesComboBox = new SearchableComboBox<>();
+    SchoolSubject subject;
+    Exam exam;
 
     public SingleExamForm(DialogComponent dialog) {
         super();
         this.dialog = dialog;
         this.dialog.setContent(this);
-        dialog.setSubmitButtonDisabled(true);
 
         SchoolSubjectRepository schoolSubjectRepository = new SchoolSubjectRepository();
         ArrayList<Integer> grades = new ArrayList<>();
@@ -49,6 +48,8 @@ public class SingleExamForm extends edu.tk.examcalc.form.Form {
 
         gradesComboBox.setPrefWidth(200);
         gradesComboBox.getItems().addAll(grades);
+
+
 
         setVgap(15);
         setHgap(15);
@@ -74,7 +75,10 @@ public class SingleExamForm extends edu.tk.examcalc.form.Form {
 
     @Override
     public void submit() {
-
+        EntityManager<Exam> em = new EntityManager<>();
+        exam.setSchoolSubjectId(subjectsComboBox.getSelectionModel().getSelectedItem().getId());
+        exam.setPoints(gradesComboBox.getSelectionModel().getSelectedItem());
+        em.persist(exam,exam.getId());
     }
 
     @Override
@@ -84,9 +88,9 @@ public class SingleExamForm extends edu.tk.examcalc.form.Form {
 
     public void showAndWait(CalculateController controller) {
 
-        Exam exam = (Exam) Session.copy("exam");
+        exam = (Exam) Session.copy("exam");
         assert exam != null;
-        SchoolSubject subject = exam.getSchoolSubject();
+        subject = exam.getSchoolSubject();
         subjectsComboBox.getSelectionModel().select(subject);
         gradesComboBox.getSelectionModel().select(exam.getPoints());
 

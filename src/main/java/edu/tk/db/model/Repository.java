@@ -61,7 +61,8 @@ public abstract class Repository<T> {
     }
 
     public T find(int id){
-        return this.doFind(id, "id");
+        String tableName = generateSnakeTailString(type.getSimpleName());
+        return this.doFind(id, tableName + ".id");
     }
 
     public T find(int id,String field){
@@ -184,6 +185,15 @@ public abstract class Repository<T> {
             this.catchException(e);
         }
         return null;
+    }
+
+    private String generateSnakeTailString(String value)
+    {
+        String string = String.join("_", value.split("(?=\\p{Upper})")).toLowerCase();
+        if(string.charAt(0) == '_'){
+            return string.substring(0);
+        }
+        return string;
     }
 
     protected void catchException(SQLException e){

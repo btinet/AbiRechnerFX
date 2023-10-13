@@ -621,38 +621,26 @@ public class QueryBuilder<T> {
 
             object = (T) this.entity.getClass().getConstructor().newInstance();
 
+
             for (Field field : this.entity.getClass().getDeclaredFields()) {
-                if (field.getModifiers() == Modifier.PROTECTED) {
-                    String fieldName = "";
-
-                    /* Hat einen Bug verursacht, da bereits durch SELECT user_role AS userRole ein camelCase besteht
-
-                    if(!this.naturalCase){
-                        fieldName += this.generateSnakeTailString(field.getName());
-                    } else {
-                        fieldName += field.getName();
-                    }
-
-                     */
-                    fieldName += field.getName();
-
+                if (field.getAnnotation(ORM.class) != null || field.getAnnotation(ManyToOne.class) != null || field.getAnnotation(Join.class) != null || field.getAnnotation(InverseJoin.class) != null) {
+                    String fieldName = field.getName();
                     field.setAccessible(true);
-                    if(field.getType().getSimpleName().equals("int")){
-                        field.set(object, result.getInt(fieldName));
-                    }
-                    if(field.getType().getSimpleName().equals("Integer")){
-                        field.set(object, result.getInt(fieldName));
-                    }
-                    if(field.getType().getSimpleName().equals("String")){
-                        field.set(object, result.getString(fieldName));
-                    }
-                    if(field.getType().getSimpleName().equals("Boolean")){
-                        field.set(object, (1 == result.getInt(fieldName)));
+                    switch (field.getType().getSimpleName()) {
+                        case "int":
+                        case "Integer":
+                            field.set(object, result.getInt(fieldName));
+                            break;
+                        case "String":
+                            field.set(object, result.getString(fieldName));
+                            break;
+                        case "boolean":
+                        case "Boolean":
+                            field.set(object, result.getBoolean(fieldName));
+                            break;
+                        default:
                     }
                     field.setAccessible(false);
-
-
-
                 }
             }
         }
