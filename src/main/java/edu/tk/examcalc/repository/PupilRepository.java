@@ -31,4 +31,29 @@ public class PupilRepository extends Repository<Pupil> {
         return null;
     }
 
+    public Pupil findOneGroupedByPupil(int id){
+        try {
+            HashMap<String,String> order = new HashMap<>();
+            order.put("examDate","DESC");
+
+            String tableName = generateSnakeTailString(type.getSimpleName());
+
+            return this.createQueryBuilder()
+                    .selectOrm()
+                    .groupBy("id")
+                    .orderBy(order)
+                    .andWhere(tableName + ".id = ?")
+                    .setParameter(1,id)
+                    .getQuery()
+                    .getOneOrNullResult()
+                    ;
+
+        } catch (SQLException e) {
+            this.catchException(e);
+        } catch (InvocationTargetException | NoSuchMethodException | InstantiationException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
 }

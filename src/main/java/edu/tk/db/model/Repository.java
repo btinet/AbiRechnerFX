@@ -17,7 +17,7 @@ import java.util.Map;
 public abstract class Repository<T> {
 
     protected T entity;
-    private Class<T> type;
+    protected Class<T> type;
     protected Boolean naturalCase = false;
     protected Boolean ucFirst = false;
     protected String alias;
@@ -187,7 +187,7 @@ public abstract class Repository<T> {
         return null;
     }
 
-    private String generateSnakeTailString(String value)
+    protected String generateSnakeTailString(String value)
     {
         String string = String.join("_", value.split("(?=\\p{Upper})")).toLowerCase();
         if(string.charAt(0) == '_'){

@@ -9,6 +9,7 @@ import edu.tk.examcalc.entity.Pupil;
 import edu.tk.examcalc.form.ExamForm;
 import edu.tk.examcalc.form.SingleExamForm;
 import edu.tk.examcalc.repository.ExamRepository;
+import edu.tk.examcalc.repository.PupilRepository;
 import edu.tk.examcalc.service.PDFExportService;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -25,6 +26,7 @@ import javafx.scene.layout.BorderPane;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class CalculateController extends Controller {
@@ -62,12 +64,9 @@ public class CalculateController extends Controller {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        this.pupil = (Pupil) Session.copy("pupil");
-        assert pupil != null;
+        this.pupil = (Pupil) Objects.requireNonNull(Session.copy("pupil"));
         this.pupilExams = pupil.getExams();
         this.tableView = new ExamTableView(this.pupilExams);
-        System.out.println("geladen!");
-
 
         setPageTitle("Prüfungen für " + this.pupil);
 
