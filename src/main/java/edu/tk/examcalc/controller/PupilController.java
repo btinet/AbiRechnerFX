@@ -11,10 +11,13 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.util.*;
@@ -118,9 +121,12 @@ public class PupilController extends Controller {
                 }
             }
         });
-
+        PupilTableView tableRender = pupilTableView.render();
+        VBox box = new VBox(tableRender);
+        box.setPadding(new Insets(5));
+        VBox.setVgrow(tableRender, Priority.ALWAYS);
         // Tab Contents
-        listTab.setContent(pupilTableView.render());
+        listTab.setContent(box);
     }
 
 }

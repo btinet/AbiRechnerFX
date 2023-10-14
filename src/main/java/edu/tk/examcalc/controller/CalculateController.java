@@ -4,6 +4,7 @@ import edu.tk.db.global.Session;
 import edu.tk.examcalc.component.DialogComponent;
 import edu.tk.examcalc.component.ExamTableView;
 import edu.tk.examcalc.component.IconButton;
+import edu.tk.examcalc.component.PupilTableView;
 import edu.tk.examcalc.entity.Exam;
 import edu.tk.examcalc.entity.Pupil;
 import edu.tk.examcalc.form.ExamForm;
@@ -15,6 +16,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -22,6 +24,8 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.text.DecimalFormat;
@@ -141,7 +145,12 @@ public class CalculateController extends Controller {
             this.grade.setText("Prüfung fehlt!");
         }
 
-        tableView.refresh();
-        centerPane.setCenter(this.tableView.render());
+        ExamTableView tableRender = tableView.render();
+        tableRender.refresh();
+        VBox box = new VBox(tableRender);
+        box.setPadding(new Insets(5));
+        VBox.setVgrow(tableRender, Priority.ALWAYS);
+
+        centerPane.setCenter(box);
     }
 }
