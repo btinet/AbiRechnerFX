@@ -11,6 +11,7 @@ module edu.tk.fxcontrollertest {
     requires layout;
     requires com.dlsc.workbenchfx.core;
     requires com.dlsc.formsfx;
+    requires com.opencsv;
 
     opens edu.tk.examcalc to javafx.fxml;
     opens edu.tk.examcalc.entity to javafx.base;

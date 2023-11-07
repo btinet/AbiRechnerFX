@@ -1,6 +1,9 @@
 package edu.tk.examcalc.controller;
 
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvValidationException;
 import edu.tk.db.global.Session;
+import edu.tk.examcalc.MainApplication;
 import edu.tk.examcalc.component.*;
 import edu.tk.examcalc.entity.Pupil;
 import edu.tk.examcalc.form.PupilForm;
@@ -18,7 +21,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 
+import java.io.*;
+import java.net.URI;
 import java.net.URL;
 import java.util.*;
 
@@ -121,12 +127,44 @@ public class PupilController extends Controller {
                 }
             }
         });
+        Button importButton = new Button("importieren");
+
+        List<List<String>> records = new ArrayList<>();
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("CSV-Datei zum Import auswählen");
+
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("CSV Dateien", "*.csv")
+        );
+        importButton.setOnAction(e -> {
+            File selectedFile = fileChooser.showOpenDialog(this.content.getScene().getWindow());
+
+            try (CSVReader csvReader = new CSVReader(new FileReader(selectedFile))) {
+                String[] values = null;
+                while ((values = csvReader.readNext()) != null) {
+                    records.add(Arrays.asList(values));
+                }
+                System.out.println(records);
+            } catch (IOException | CsvValidationException exception) {
+                System.out.println(exception.getMessage());
+            } catch (NullPointerException ignored) {
+
+            }
+
+        });
+
+
+
+
+
         PupilTableView tableRender = pupilTableView.render();
         VBox box = new VBox(tableRender);
         box.setPadding(new Insets(5));
         VBox.setVgrow(tableRender, Priority.ALWAYS);
         // Tab Contents
         listTab.setContent(box);
+        importTab.setContent(importButton);
     }
 
 }
