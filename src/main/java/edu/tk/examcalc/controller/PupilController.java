@@ -1,8 +1,12 @@
 package edu.tk.examcalc.controller;
 
+import com.opencsv.CSVParser;
+import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
+import com.opencsv.CSVReaderBuilder;
 import com.opencsv.exceptions.CsvValidationException;
 import edu.tk.db.global.Session;
+import edu.tk.db.model.EntityManager;
 import edu.tk.examcalc.MainApplication;
 import edu.tk.examcalc.component.*;
 import edu.tk.examcalc.entity.Pupil;
@@ -140,18 +144,44 @@ public class PupilController extends Controller {
         importButton.setOnAction(e -> {
             File selectedFile = fileChooser.showOpenDialog(this.content.getScene().getWindow());
 
-            try (CSVReader csvReader = new CSVReader(new FileReader(selectedFile))) {
+            EntityManager<Pupil> entityManager = new EntityManager<>();
+
+
+
+            try  {
+                CSVParser parser = new CSVParserBuilder()
+                        .withSeparator(';')
+                        .withIgnoreQuotations(true)
+                        .build();
+
+                CSVReader csvReader = new CSVReaderBuilder(new FileReader(selectedFile))
+                        .withSkipLines(1)
+                        .withCSVParser(parser)
+                        .build();
+
                 String[] values = null;
                 while ((values = csvReader.readNext()) != null) {
-                    records.add(Arrays.asList(values));
+                        Pupil pupil = new Pupil();
+                        records.add(Arrays.asList(values));
+                        pupil.setFirstname(values[0]);
+                        pupil.setLastname(values[1]);
+                        pupil.setBirthDate(values[2]);
+                        pupil.setExamDate(values[3]);
+                        pupil.setCoursePoints(Integer.parseInt(values[4]));
+                        entityManager.persist(pupil);
                 }
-                System.out.println(records);
             } catch (IOException | CsvValidationException exception) {
                 System.out.println(exception.getMessage());
             } catch (NullPointerException ignored) {
 
+            } catch (ArrayIndexOutOfBoundsException exception) {
+                System.out.println("Die CSV-Datei enthält zu wenig Spalten!");
+            } catch (NumberFormatException exception) {
+                System.out.println("Eine Spalte enthält falsche Werte!");
             }
 
+            System.out.println("Alles hat geklappt!");
+            switchToController(content,this);
         });
 
 
