@@ -1,17 +1,20 @@
 Manifest-Version: 1.0
 Main-Class: edu.tk.examcalc.MainApplication
-Class-Path: aquafx-0.2.jar mysql-connector-j-8.0.31.jar stylemanager-0.1
- b2.jar javafx-graphics-11.0.2.jar guava-31.0.1-jre.jar protobuf-java-3.
- 19.4.jar ikonli-javafx-12.3.1.jar javafx-fxml-17.0.2-win.jar ikonli-win
- 10-pack-12.3.1.jar bcprov-jdk15on-1.68.jar ikonli-core-12.2.0.jar jsr30
- 5-3.0.2.jar jmetro-11.6.16.jar logback-classic-0.9.24.jar listenablefut
- ure-9999.0-empty-to-avoid-conflict-with-guava.jar checker-qual-3.12.0.j
- ar bcpkix-jdk15on-1.68.jar error_prone_annotations-2.7.1.jar workbenchf
- x-core-11.3.1.jar logback-core-0.9.24.jar layout-7.1.18.jar javafx-base
- -11.0.2.jar ikonli-remixicon-pack-12.3.1.jar javafx-controls-11.0.2.jar
-  controlsfx-11.1.2.jar javafx-base-11.0.2-win.jar javafx-controls-11.0.
- 2-win.jar io-7.1.18.jar failureaccess-1.0.1.jar ikonli-materialdesign-p
- ack-12.2.0.jar slf4j-api-1.7.32.jar j2objc-annotations-1.3.jar ikonli-c
- oreui-pack-12.3.1.jar kernel-7.1.18.jar javafx-graphics-11.0.2-win.jar 
- javafx-fxml-17.0.2.jar ikonli-carbonicons-pack-12.3.1.jar
+Class-Path: formsfx-core-11.6.0.jar listenablefuture-9999.0-empty-to-avo
+ id-conflict-with-guava.jar bcpkix-jdk15on-1.68.jar error_prone_annotati
+ ons-2.7.1.jar javafx-base-11.0.2.jar j2objc-annotations-1.3.jar commons
+ -logging-1.2.jar commons-collections-3.2.2.jar ikonli-remixicon-pack-12
+ .3.1.jar javafx-graphics-11.0.2.jar javafx-fxml-17.0.2-win.jar javafx-c
+ ontrols-11.0.2.jar opencsv-5.7.1.jar javafx-base-11.0.2-win.jar commons
+ -collections4-4.4.jar ikonli-core-12.2.0.jar mysql-connector-j-8.0.31.j
+ ar controlsfx-11.1.2.jar commons-lang3-3.12.0.jar workbenchfx-core-11.3
+ .1.jar kernel-7.1.18.jar commons-text-1.10.0.jar commons-beanutils-1.9.
+ 4.jar stylemanager-0.1b2.jar aquafx-0.2.jar layout-7.1.18.jar guava-31.
+ 0.1-jre.jar ikonli-javafx-12.3.1.jar bcprov-jdk15on-1.68.jar javafx-gra
+ phics-11.0.2-win.jar ikonli-materialdesign-pack-12.2.0.jar jsr305-3.0.2
+ .jar io-7.1.18.jar javafx-fxml-17.0.2.jar javafx-controls-11.0.2-win.ja
+ r ikonli-win10-pack-12.3.1.jar ikonli-coreui-pack-12.3.1.jar jmetro-11.
+ 6.16.jar ikonli-carbonicons-pack-12.3.1.jar logback-classic-0.9.24.jar 
+ checker-qual-3.12.0.jar slf4j-api-1.7.32.jar failureaccess-1.0.1.jar lo
+ gback-core-0.9.24.jar protobuf-java-3.19.4.jar
 

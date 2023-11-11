@@ -43,11 +43,8 @@ public class CalculateController extends Controller {
     public IconButton exportButton;
     public IconButton refreshButton;
     public IconButton pupilCrudButton;
-
     private Pupil pupil;
     private ExamTableView tableView;
-
-    private final ExamRepository examRepository = new ExamRepository();
     private ExamForm examForm;
     private SingleExamForm editForm;
     private ArrayList<Exam> pupilExams;
@@ -95,21 +92,18 @@ public class CalculateController extends Controller {
             newButton.setDisable(true);
         }
 
-        tableView.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
-                    Node node = ((Node) event.getTarget()).getParent();
-                    TableRow row;
-                    if (node instanceof TableRow) {
-                        row = (TableRow) node;
-                    } else {
-                        // clicking on text part
-                        row = (TableRow) node.getParent();
-                    }
-                    if(row.getItem() != null) {
-                        editForm.showAndWait(controller);
-                    }
+        tableView.setOnMousePressed(event -> {
+            if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+                Node node = ((Node) event.getTarget()).getParent();
+                TableRow row;
+                if (node instanceof TableRow) {
+                    row = (TableRow) node;
+                } else {
+                    // clicking on text part
+                    row = (TableRow) node.getParent();
+                }
+                if (row.getItem() != null) {
+                    editForm.showAndWait(controller);
                 }
             }
         });
