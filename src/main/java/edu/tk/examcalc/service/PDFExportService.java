@@ -166,7 +166,7 @@ public class PDFExportService {
 
                         if(x < 15 && sumPoints < 823) {
                             DecimalFormat df = new DecimalFormat("#.#");
-                            table.addCell(String.valueOf((int)x));
+                            table.addCell(String.valueOf((int)Math.round(x)));
                             table.addCell(String.valueOf(zwischenSumme));
                             table.addCell(String.valueOf(nextKey));
                             table.addCell(String.valueOf(df.format(grade - .1)));
