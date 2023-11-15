@@ -6,8 +6,7 @@ import edu.tk.examcalc.entity.Pupil;
 import javafx.beans.property.*;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.*;
 
 public class ExamTableData {
 
@@ -68,7 +67,14 @@ public class ExamTableData {
             double lowerX = (double) lowerZwischenSumme*3/4 -(exam.getPoints()*2);
             double x = (double) zwischenSumme *3/4 -(exam.getPoints()*2);
 
-            if(x < 15 && sumPoints < 823) {
+            Optional<Integer> searchedKey = Grades.GRADE
+                    .entrySet()
+                    .stream()
+                    .filter(entry -> Objects.equals(entry.getValue(), 1.0))
+                    .map(Map.Entry::getKey)
+                    .findFirst();
+
+            if(x < 15 && sumPoints < searchedKey.hashCode()) {
                 int roundedX = (int) Math.round(lowerX);
                 if(roundedX >= 0) {
                     criticalPoints.setValue(String.valueOf(roundedX));
