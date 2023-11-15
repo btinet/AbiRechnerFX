@@ -83,7 +83,7 @@ public class ExamTableData {
                 }
                 DecimalFormat df = new DecimalFormat("#.#");
 
-                neededPoints.setValue(String.valueOf(Math.ceil(x)));
+                neededPoints.setValue(String.valueOf(Math.round(x)));
                 neededIntegerPoints.setValue(String.valueOf(getNeededPoints()));
                 neededSummedPoints.setValue(String.valueOf(zwischenSumme));
                 summedExamPoints.setValue(String.valueOf(nextKey));
